@@ -204,19 +204,15 @@ class thong_tin_xe{
         void set_tg_hientrai(const string &thoi_gian_vao){
             this->thoi_gian_vao = thoi_gian_vao;
         }
-
-        // xoa xe ra khoi vector xe thi dung toi de hien thi thoi gian ra bai
-        void thoigianra(){
-            thoi_gian_ra = thoigian_hientai();
+        void set_tg_ra(const string &thoi_gian_ra){
+            this->thoi_gian_ra = thoi_gian_ra;
         }
+
 
         string get_bien_so() const {return bien_so;}
         string get_loai_xe() const {return loai_xe;}
         string get_thoi_gian_vao() const {return thoi_gian_vao;}
-        string get_thoi_gian_ra(){
-            string thoi_gian_ra = thoigian_hientai();
-            return thoi_gian_ra;
-        }
+        string get_tg_ra() const {return  thoi_gian_ra;}
 
         // Mon May  5 19:05:29 2025  >> đổi thành số giây từ 1/1/1900 đến Mon May  5 19:05:29 2025 đc bao nhiêu giây >>  đổi thành giờ lại
         time_t dinh_dang_thoi_gian(const string &time){
@@ -290,30 +286,48 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
         } 
         // save and load data
         // tai du lieu len vector xa_may | xe_oto
-        void load_data_car(const string &ten_file, vector<pair<thong_tin_xe, thong_tin_nguoi>> &tt_car){
+        void load_data_car(const string &ten_file, vector<pair<thong_tin_xe, thong_tin_nguoi>> &tt_car) {
             ifstream inflie(ten_file);
+            if (!inflie.is_open()) {
+                cout << "Khong the mo file " << ten_file << " de doc du lieu.\n";
+                return;
+            }
             string dong;
-            while(getline(inflie, dong)){
+            while (getline(inflie, dong)) {
                 stringstream ss(dong);
-                string bienso, loaixe, thoigianvao, ID, ten;
-                if(getline(ss, bienso, '|') && getline(ss, loaixe, '|') && getline(ss, thoigianvao, '|') 
-                    && getline(ss, ID, '|') && getline(ss, ten)){
-                    thong_tin_xe xe;
-                    thong_tin_nguoi nhan_vien;
-
-                    // thong tin xe
-                    xe.set_bien_so(bienso);
-                    xe.set_loai_xe(loaixe);
-                    xe.set_tg_hientrai(thoigianvao);
-
-                    // thong tin chu so huu
-                    nhan_vien.set_ID(ID);
-                    nhan_vien.set_hoten(ten);
-
-                    tt_car.push_back({xe, nhan_vien});
+                string bienso, loaixe, thoigianvao, thoigianra, ID, ten, tien;
+                if (ten_file == "dang_ki_xe_may_theo_thang.txt" || ten_file == "dang_ki_xe_oto_theo_thang.txt"){
+                    if (getline(ss, bienso, '|') && getline(ss, loaixe, '|') && getline(ss, thoigianvao, '|') 
+                        && getline(ss, thoigianra, '|') && getline(ss, ID, '|') && getline(ss, ten, '|')){
+                        getline(ss, tien, '|');
+                        thong_tin_xe xe;
+                        thong_tin_nguoi nhan_vien;
+                        xe.set_bien_so(bienso);
+                        xe.set_loai_xe(loaixe);
+                        xe.set_tg_hientrai(thoigianvao);
+                        xe.set_tg_ra(thoigianra);
+                        nhan_vien.set_ID(ID);
+                        nhan_vien.set_hoten(ten);
+                        tt_car.push_back({xe, nhan_vien});
+                    }
+                } else {
+                    if (getline(ss, bienso, '|') && getline(ss, loaixe, '|') && getline(ss, thoigianvao, '|') 
+                        && getline(ss, ID, '|') && getline(ss, ten)) {
+                        thong_tin_xe xe;
+                        thong_tin_nguoi nhan_vien;
+                        xe.set_bien_so(bienso);
+                        xe.set_loai_xe(loaixe);
+                        xe.set_tg_hientrai(thoigianvao);
+                        nhan_vien.set_ID(ID);
+                        nhan_vien.set_hoten(ten);
+                        tt_car.push_back({xe, nhan_vien});
+                    }
                 }
             }
-        }
+            inflie.close();
+        }   
+        
+        
         // luu thong tin vao file
         void save_data_car(const string &ten_file, const pair<thong_tin_xe, thong_tin_nguoi> &xe) {
              ofstream outFile(ten_file, ios::app);    
@@ -406,19 +420,20 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
 
         void dang_ki_gui_xe_thang(string &id_hien_tai, const string &loai_xe, const string &bien_so, const string &ten_file, vector<thong_tin_nguoi> &nhanvien){
             const int phi_thang_xe_may = 2000*720;  // 30 ngay = 720 gioi;
-            const int phi_thang_xe_oto = 5000*720;  // 30 ngay = 720 gioi;
+            const int phi_thang_xe_oto = 5000*720;  
             if(loai_xe == "xe may"){
                 for(auto it = xe_may.begin(); it != xe_may.end();){
                     if(it->first.get_bien_so() == bien_so && it->second.get_ID() == id_hien_tai){
                         it->first.set_tg_hientrai(thoigian_hientai());
                         string thoi_gian_ra = cong_them_tg(it->first.thoigian_hientai(), 720); // 1 thang
+                        it->first.set_tg_ra(thoi_gian_ra);
                         
                         for(auto &nv : nhanvien){
                             if(nv.get_ID() == id_hien_tai){
                                 if(nv.get_tien() >= phi_thang_xe_may){
                                     // cho phep gui
                                     nv.set_tien(nv.get_tien() - phi_thang_xe_may);
-                                    ghi_lich_su(it->first, it->second, phi_thang_xe_may, "dang_ki_xe_may_theo_thang.txt");
+                                    ghi_file_thang("dang_ki_xe_may_theo_thang.txt", it->first, it->second);
                                     xe_may_theo_thang.push_back({it->first, it->second});
                                     cout << "Dang ki thanh cong...\n";
                                     cout << "Thoi gian ra: " << thoi_gian_ra << endl;
@@ -441,13 +456,14 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
                     if(it->first.get_bien_so() == bien_so && it->second.get_ID() == id_hien_tai){
                         it->first.set_tg_hientrai(thoigian_hientai());
                         string thoi_gian_ra = cong_them_tg(it->first.thoigian_hientai(), 720); // 1 thang
-                        
+                        it->first.set_tg_ra(thoi_gian_ra);
+
                         for(auto &nv : nhanvien){
                             if(nv.get_ID() == id_hien_tai){
                                 if(nv.get_tien() >= phi_thang_xe_oto){
                                     // cho phep gui
                                     nv.set_tien(nv.get_tien() - phi_thang_xe_oto);
-                                    ghi_lich_su(it->first, it->second, phi_thang_xe_oto, "dang_ki_xe_oto_theo_thang.txt");
+                                    ghi_file_thang("dang_ki_xe_oto_theo_thang.txt", it->first, it->second);
                                     xe_oto_theo_thang.push_back({it->first, it->second});
                                     cout << "Dang ki thanh cong...\n";
                                     cout << "Thoi gian ra: " << thoi_gian_ra << endl;
@@ -466,6 +482,33 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
                     }
                 }
             }
+        }
+
+        void ghi_file_thang(const string &ten_file, thong_tin_xe &xe, thong_tin_nguoi &nhan_vien){
+            ofstream outfile(ten_file, ios::app);
+            if (!outfile.is_open()) {
+                cout << "Khong the mo file " << ten_file << " de ghi du lieu.\n";
+                system("pause");
+                return;
+            }
+            outfile << xe.get_bien_so() << "|" << xe.get_loai_xe() << "|" 
+                    << xe.get_thoi_gian_vao() << "|" << xe.get_tg_ra() << "|"
+                    << nhan_vien.get_ID() << "|" << nhan_vien.get_hoten() << endl;
+            outfile.close();
+        }
+
+        void auto_layxe(const string &loai_xe , const string &ten_file, vector<pair<thong_tin_xe, thong_tin_nguoi>> &xe_thang){
+            time_t thoi_gian_thuc_lay_xe = dinh_dang_thoi_gian(thoigian_hientai());
+            for (auto it = xe_thang.begin(); it != xe_thang.end();) {
+                    if (it->first.dinh_dang_thoi_gian(it->first.get_tg_ra()) <= thoi_gian_thuc_lay_xe){
+                        cout << "Xe voi bien so " << it->first.get_bien_so() << " da duoc tu dong lay ra.\n";
+                        it = xe_thang.erase(it);
+            }else{
+                ++it;
+            }
+        }
+
+            ghi_de_vaoFile_guithang(loai_xe, ten_file);
         }
 
         // danh sach xe da dang ki truoc do cua tai khoan | ca nhan
@@ -554,6 +597,25 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
             return false;
         }
 
+        void ghi_de_vaoFile_guithang(const string &loai_xe, const string &ten_file) {
+            if(loai_xe == "xe may"){
+                ofstream outFlie("dang_ki_xe_may_theo_thang.txt", ios::trunc);
+                for(auto &xe : xe_may_theo_thang){
+                   outFlie << xe.first.get_bien_so() << "|" << xe.first.get_loai_xe() << "|" << xe.first.get_thoi_gian_vao() << "|" <<xe.first.get_tg_ra() <<
+                    "|" << xe.second.get_ID() << "|" << xe.second.get_hoten() << endl;
+                }
+                outFlie.close();
+            }
+            else if(loai_xe == "xe oto"){
+                ofstream outFlie("dang_ki_xe_oto_theo_thang.txt", ios::trunc);
+                for(auto &xe : xe_oto_theo_thang){
+                    outFlie << xe.first.get_bien_so() << "|" << xe.first.get_loai_xe() << "|" << xe.first.get_thoi_gian_vao() << "|" <<xe.first.get_tg_ra() <<
+                    "|" << xe.second.get_ID() << "|" << xe.second.get_hoten() << endl;
+                }
+                outFlie.close();
+            }
+        }
+
         void ghi_de_vaoFile_hethong_xe(const string &loai_xe, const string &ten_file){
             if(loai_xe == "xe may"){
                 ofstream outFlie("xe_may.txt", ios::trunc);
@@ -637,7 +699,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
                 return;
             }
             outfile << xe.get_bien_so() << "|" << xe.get_loai_xe() << "|" << xe.get_thoi_gian_vao() << "|"
-            << xe.get_thoi_gian_ra() << "|" << nhanvien.get_ID() << "|" << nhanvien.get_hoten() << "|"
+            << xe.get_tg_ra() << "|" << nhanvien.get_ID() << "|" << nhanvien.get_hoten() << "|"
             << phi << endl;
             outfile.close();
         }
@@ -652,8 +714,8 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
             if (loai_xe == "xe may") {
                 for (auto it = xe_may_hien_tai.begin(); it != xe_may_hien_tai.end();) {
                     if (it->first.get_bien_so() == bien_so && it->second.get_ID() == id_hien_tai) {
-                        it->first.thoigianra(); // Cập nhật thời gian ra
-                        int so_gio = it->first.tinh_khoang_tg(it->first.get_thoi_gian_vao(), it->first.get_thoi_gian_ra());
+                        it->first.set_tg_ra(thoigian_hientai()); // Cập nhật thời gian ra
+                        int so_gio = it->first.tinh_khoang_tg(it->first.get_thoi_gian_vao(), it->first.get_tg_ra());
                         int phi = so_gio * phi_xe_may;
         
                         // Cập nhật số dư
@@ -662,7 +724,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
                                 if (thongtin.get_tien() >= phi) {
                                     thongtin.set_tien(thongtin.get_tien() - phi);
                                     cout << "Da lay xe voi bien so " << bien_so << endl;
-                                    cout << "Thoi gian ra: " << it->first.get_thoi_gian_ra() << endl;
+                                    cout << "Thoi gian ra: " << it->first.get_tg_ra() << endl;
                                     cout << "Tong thoi gian ra: " << so_gio << " gio\n";
                                     cout << "Phi gui xe: " << dinh_dang_tien(phi) << " VND" << endl;
                                     cout << "So du hien tai: " << dinh_dang_tien(thongtin.get_tien()) << " VND" << endl;
@@ -688,8 +750,8 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
             } else if (loai_xe == "xe oto") {
                 for (auto it = xe_oto_hien_tai.begin(); it != xe_oto_hien_tai.end();) {
                     if (it->first.get_bien_so() == bien_so && it->second.get_ID() == id_hien_tai) {
-                        it->first.thoigianra(); // Cập nhật thời gian ra
-                        int so_gio = it->first.tinh_khoang_tg(it->first.get_thoi_gian_vao(), it->first.get_thoi_gian_ra());
+                        it->first.set_tg_ra(thoigian_hientai()); // Cập nhật thời gian ra
+                        int so_gio = it->first.tinh_khoang_tg(it->first.get_thoi_gian_vao(), it->first.get_tg_ra());
                         int phi = so_gio * phi_oto;
         
                         // Cập nhật số dư
@@ -698,7 +760,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
                                 if (thongtin.get_tien() >= phi) {
                                     thongtin.set_tien(thongtin.get_tien() - phi);
                                     cout << "Da lay xe voi bien so: " << bien_so << endl;
-                                    cout << "Thoi gian ra: " << it->first.get_thoi_gian_ra() << endl;
+                                    cout << "Thoi gian ra: " << it->first.get_tg_ra() << endl;
                                     cout << "Tong thoi gian ra: " << so_gio << " gio\n";
                                     cout << "Phi gui xe: " << dinh_dang_tien(phi) << " VND" << endl;
                                     cout << "So du hien tai: " << dinh_dang_tien(thongtin.get_tien()) << " VND" << endl;
@@ -751,6 +813,8 @@ public:
         load_data_people("account_of_users.txt", tt_nhan_vien);
         load_data_people("account_of_admin.txt", tt_admin);
         quan_li_bai_xe.constructor_car();
+        quan_li_bai_xe.auto_layxe("xe may", "dang_ki_xe_may_theo_thang.txt", quan_li_bai_xe.xe_may_theo_thang);
+        quan_li_bai_xe.auto_layxe("xe oto", "dang_ki_xe_oto_theo_thang.txt", quan_li_bai_xe.xe_oto_theo_thang);
     }
 
 

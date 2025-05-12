@@ -62,16 +62,42 @@ class thong_tin_nguoi{
             return cuoi_id == "_admin";
         }
 
+        //09/03/2006
+        bool dinh_dang_ngay_sinh(const string &ngaysinh){
+            if(ngaysinh[2] != '/' || ngaysinh[5] != '/' || ngaysinh.size() != 10){
+                return false;
+            }
+            return true;
+        }
+
+        bool check_gio_tinh(const string &gioi_tinh){
+            return gioi_tinh == "nam" || gioi_tinh == "nu";
+        }
+
         void information(){
             cout << "Nhap ID: ";
             cin.ignore();
             getline(cin, ID);
             cout << "Nhap ho ten: ";
-            getline(cin, hoten);    
-            cout << "Nhap ngay sinh: ";
-            getline(cin, ngaysinh);
-            cout << "Nhap gioi tinh: ";
-            getline(cin, gioi_tinh);
+            getline(cin, hoten); 
+            
+            do
+            {
+                cout << "Nhap ngay sinh: ";
+                getline(cin, ngaysinh);
+                if(!dinh_dang_ngay_sinh(ngaysinh)){
+                    cout << "Ngay sinh khong hop le, nhap lai...\n";
+                }
+            } while (!dinh_dang_ngay_sinh(ngaysinh));
+           
+            do
+            {
+                cout << "Nhap gioi tinh: ";
+                getline(cin, gioi_tinh);
+                if(!check_gio_tinh(gioi_tinh)){
+                    cout << "Gioi tinh khong hop le, nhap lai...\n";
+                }
+            } while (!check_gio_tinh(gioi_tinh));
             
             do
             {
@@ -82,7 +108,6 @@ class thong_tin_nguoi{
                 }
             } while (!check_gmail(gmail));
             
-           
             do
             {
                 cout << "Nhap so dien thoai: ";

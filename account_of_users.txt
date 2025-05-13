@@ -1,4 +1,4 @@
-1234|password123|minh tuan|nam|01/01/1990|0901234567|minhtuan@gmail.com|724000
+1234|password123|minh tuan|nam|01/01/1990|0901234567|minhtuan@gmail.com|144000
 5678|password567|thanh huong|nu|15/05/1992|0912345678|thanhhuong@gmail.com|60000
 9012|password901|van nam|nam|20/10/1988|0923456789|vannam@gmail.com|45000
 3456|password345|thi mai|nu|12/03/1995|0934567890|thimai@gmail.com|70000
@@ -93,3 +93,4 @@
 12445656|afsdfadfasdf|asfasdf|aafgar|adfgsg|0332174116|affarf@gmail.com|0
 afvuadfa|ndfasdfafaf|dfadsfiad|anm|afhbaf|0332174116|ardf@gmail.com|0
 anh_admin|ngoacsdh|q34rvads|asdfasdf|namsdf|0332174226|asdf@gmail.com|0
+12DVngoacnha|ngocanh|Nguyen Ngoc Anh|nam|09/03/2006|0332174116|anh066000@gmail.com|0

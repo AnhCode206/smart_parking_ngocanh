@@ -42,7 +42,7 @@ class thong_tin_nguoi{
         bool check_gmail(const string &gmail){
             if(gmail.size() <= 10) return false;
             string cuoi_gmail = gmail.substr(gmail.size() - 10);     // 10 ki tu cuoi gmail nhap vao
-            return cuoi_gmail == "@gmail.com";   // so sanh lai cs giong @gmail.com hay ko
+            return cuoi_gmail == "@gmail.com"; 
         }
 
         string dinh_dang_tien(int money){

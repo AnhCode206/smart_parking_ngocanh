@@ -38,6 +38,14 @@ Hệ thống có phân quyền người dùng gồm: **Admin** và **User**, m�
 
 ## CÔNG NGHỆ SỬ DỤNG
 
-- Ngôn ngữ lập trình: C++  
+- Ngôn ngữ lập trình: C++
+- Yêu cầu: C++ 17 trở lên  
 - IDE: Visual Studio Code / Sublime Text  
-- Lưu trữ dữ liệu: File `.txt`  
+- Lưu trữ dữ liệu: File `.txt`
+
+### LIÊN HỆ
+- Facebook: [Nhấn vào đây](https://www.facebook.com/ngoc.anh.597620/)
+- Github: [Nhấn vào đây](https://github.com/AnhCode206/)  
+
+---
+### CẢM ƠN BẠN ĐÃ QUAN TÂM DỰ ÁN ❤️

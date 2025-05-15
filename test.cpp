@@ -885,11 +885,11 @@ public:
     void load_data_people(const string &ten_file, vector<thong_tin_nguoi> &ds_people){
         ifstream inflie(ten_file);
         string dong;
-        if(!inflie.is_open()){
-            cout << "He thong loi, cho it phut...\n";
-            system("pause");
-            return;
-        }
+        // if(!inflie.is_open()){
+        //     cout << "He thong loi, cho it phut...\n";
+        //     system("pause");
+        //     return;
+        // }
 
         while(getline(inflie, dong)){
             stringstream ss(dong);
@@ -1530,8 +1530,8 @@ public:
             cout << "Sai phuong thuc nhap...\n";
             return;
         }
-        if(admin.save_info("account_of_users.txt", "account_of_admin.txt", "account_of_admin.txt")) {
-            tt_nhan_vien.push_back(admin);
+        if(admin.save_info("account_of_admin.txt", "account_of_admin.txt", "account_of_users.txt")) {
+            tt_admin.push_back(admin);
         }
     }
 

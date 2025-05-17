@@ -351,9 +351,45 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
             }
             inflie.close();
         }   
+
+
+        // phục vụ cho chức năng cập nhật thông tin cho tài khoản của nhân 
+        void cap_nhat_id_txt(const string &id_hien_tai, const string &new_id){
+            for(auto &thong_tin : xe_may){
+                if(thong_tin.second.get_ID() == id_hien_tai){
+                    thong_tin.second.set_ID(new_id);
+                }
+            }
+            for(auto &thong_tin : xe_oto){
+                if(thong_tin.second.get_ID() == id_hien_tai){
+                    thong_tin.second.set_ID(new_id);
+                }
+            }
+            for(auto &thong_tin : xe_may_hien_tai){
+                if(thong_tin.second.get_ID() == id_hien_tai){
+                    thong_tin.second.set_ID(new_id);
+                }
+            }
+            for(auto &thong_tin : xe_oto_hien_tai){
+                if(thong_tin.second.get_ID() == id_hien_tai){
+                    thong_tin.second.set_ID(new_id);
+                }
+            }
+            for(auto &thong_tin : xe_may_theo_thang){
+                if(thong_tin.second.get_ID() == id_hien_tai){
+                    thong_tin.second.set_ID(new_id);
+                }
+            }
+            for(auto &thong_tin : xe_oto_theo_thang){
+                if(thong_tin.second.get_ID() == id_hien_tai){
+                    thong_tin.second.set_ID(new_id);
+                }
+            }
+            
+        }
         
         
-        // luu thong tin vao file
+        // luu thong tin vao file | lưu cho 1 xe, đc dùng khi thêm 1 phương tiện vào tài khoản trước khi đăng kí giữ 
         void save_data_car(const string &ten_file, const pair<thong_tin_xe, thong_tin_nguoi> &xe) {
              ofstream outFile(ten_file, ios::app);    
             string dong;
@@ -885,11 +921,11 @@ public:
     void load_data_people(const string &ten_file, vector<thong_tin_nguoi> &ds_people){
         ifstream inflie(ten_file);
         string dong;
-        // if(!inflie.is_open()){
-        //     cout << "He thong loi, cho it phut...\n";
-        //     system("pause");
-        //     return;
-        // }
+        if(!inflie.is_open()){
+            cout << "He thong loi, cho it phut...\n";
+            system("pause");
+            return;
+        }
 
         while(getline(inflie, dong)){
             stringstream ss(dong);
@@ -912,8 +948,8 @@ public:
     }
     
     //xoa thong tin nhan vien
-    void save_tt_from_vector(const vector<thong_tin_nguoi> &danhsach){
-        ofstream outfile("account_of_users.txt"); // xoa het du lieu cu, ghi lai tu vector
+    void save_tt_from_vector(const vector<thong_tin_nguoi> &danhsach, const string &ten_file){
+        ofstream outfile(ten_file); // xoa het du lieu cu, ghi lai tu vector
         if(!outfile.is_open()){
             cout << "Không thể mở file để ghi dữ liệu.\n";
             return;
@@ -929,6 +965,197 @@ public:
                     << nhanvien.get_gmail() << '|'
                     << nhanvien.get_tien() << endl;
         }
+    }
+
+    // chuc nang chinh sua thong tin
+
+        /* chỉnh sửa id sẽ liên quan tới các file lưu trữ xe, xe_may.txt, xe_oto.txt,.... các file gửi xe khác
+            nên cần phải cập lại id cho từng vector lưu trữ xe, sau đó ghi lại vào file, các thông tin như ngày sinh... 
+            ko liên quan tới các file trữ xe nên cần cập nhật vào file .txt */
+
+    void chinh_sua_thong_tin(){
+        int choice;
+        do
+        {
+            clean_display();
+            cout << "1. Thay doi ID\n";
+            cout << "2. Thay doi ngay sinh\n";
+            cout << "3. Thay doi so dien thoai\n";
+            cout << "4. Thay doi gmail\n";
+            cout << "5. Thay doi ma khau\n";
+            cout << "-------> Nhap so de chon chuc nang: ";
+            cin >> choice;
+            clean_display();
+
+            thong_tin_nguoi* thongtin = tim_tt_id(tt_nhan_vien, id_hien_tai);
+            if(!thongtin){
+                thongtin = tim_tt_id(tt_admin, id_hien_tai);
+            }
+
+            switch (choice)
+            {
+            case 1:{    
+                        string new_id;
+                        cout << "Nhap ID: ";
+                        cin.ignore(); getline(cin, new_id);
+                        if(kt_trungTaiKhoan(new_id, "account_of_users.txt", "account_of_admin.txt")){
+                            cout << "ID ton tai, vui long nhap ID khac...\n";
+                            system("pause");
+                            return; 
+                        }
+
+                        if(thongtin){
+                            if(dinh_dang_id_admin(thongtin->get_ID())){     // id admin
+                                if(dinh_dang_id_admin(new_id)){
+                                    thongtin->set_ID(new_id);
+                                    id_hien_tai = new_id; // cap nhat lai id hien tai cho he thong
+                                    save_tt_from_vector(tt_admin, "account_of_admin.txt");
+                                    
+                                    cout << "Doi thanh cong...\n";
+                                    system("pause");
+                                }else{
+                                    cout << "ID sai dinh dang, vui long nhap lai...\n";
+                                    system("pause");
+                                }
+                            }else{      //id nhan vien
+                                if(dinh_dang_id_admin(new_id)) {
+                                    cout << "ID sai dinh dang, vui long nhap lai...\n";
+                                    system("pause");
+                                    break;
+                                }
+                                thongtin->set_ID(new_id);
+                                quan_li_bai_xe.cap_nhat_id_txt(id_hien_tai, new_id); 
+                                // Ghi đè các file phương tiện
+                                quan_li_bai_xe.ghi_de_vaoFile_hethong_xe("xe may", "xe_may.txt");
+                                quan_li_bai_xe.ghi_de_vaoFile_hethong_xe("xe oto", "xe_oto.txt");
+                                quan_li_bai_xe.ghi_de_vaoFile_xe_gui("xe may", "xe_may_hien_tai.txt");
+                                quan_li_bai_xe.ghi_de_vaoFile_xe_gui("xe oto", "xe_oto_hien_tai.txt");
+                                quan_li_bai_xe.ghi_de_vaoFile_guithang("xe may", "dang_ki_xe_may_theo_thang.txt");
+                                quan_li_bai_xe.ghi_de_vaoFile_guithang("xe oto", "dang_ki_xe_oto_theo_thang.txt");
+                                save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
+                                id_hien_tai = new_id;
+                                cout << "Doi ID thanh cong!\n";
+                                system("pause");
+                            }
+                        }
+                    }
+                break;
+            case 2:
+                {
+                    string new_ngaysinh;
+                    cout << "Nhap Ngay sinh moi: ";
+                    cin.ignore();
+                    getline(cin, new_ngaysinh);
+    
+                    if(!dinh_dang_ngay_sinh(new_ngaysinh)){
+                        cout << "Sai dinh dang, vui long nhap lai...\n";
+                        system("pause");
+                        return;
+                    }
+    
+                    thongtin->set_ngaysinh(new_ngaysinh);
+                    if(dinh_dang_id_admin(id_hien_tai)){
+                        save_tt_from_vector(tt_admin, "account_of_admin.txt");
+                    }else{
+                        save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
+                    }
+                    cout << "Doi ngay sinh thanh cong...\n";
+                    system("pause");
+                }
+                break;
+            case 3:
+                {
+                    string new_sdt;
+                    cout << "Nhap so dien thoai moi: ";
+                    cin.ignore();
+                    getline(cin, new_sdt);
+
+                    if(!check_sdt(new_sdt)){
+                        cout << "So dien thoai khong dung dinh dang...\n";
+                        system("pause");
+                        return;
+                    }
+
+                    thongtin->set_sdt(new_sdt);
+                     if(dinh_dang_id_admin(id_hien_tai)){
+                        save_tt_from_vector(tt_admin, "account_of_admin.txt");
+                    }else{
+                        save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
+                    }
+                    cout << "Doi ngay sinh thanh cong...\n";
+                    system("pause");
+                }
+
+                break;
+            case 4:
+                {
+                    string new_gmail;
+                    cout << "Nhap gmail moi: ";
+                    cin.ignore();
+                    getline(cin, new_gmail);
+
+                    if(!check_gmail(new_gmail)){
+                        cout << "Gmail khong dung dinh dang...\n";
+                        system("pause");
+                        return;
+                    }
+
+                    thongtin->set_gmail(new_gmail);
+                     if(dinh_dang_id_admin(id_hien_tai)){
+                        save_tt_from_vector(tt_admin, "account_of_admin.txt");
+                    }else{
+                        save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
+                    }
+                    cout << "Doi gmail thanh cong...\n";
+                    system("pause");
+                }                
+                break;
+            case 5:
+                {
+                    string  mk_hientai ,new_mk, nhap_lai;
+                    cout << "Mau khau hien tai: ";
+                    cin.ignore();
+                    getline(cin, mk_hientai);
+                    if(mk_hientai != thongtin->get_password()){
+                        cout << "Mat khau Khong chinh xac...\n";
+                        system("pause");
+                        return;
+                    }
+
+                    cout << "Nhap mat khau moi: ";
+                    getline(cin, new_mk);
+                    
+                    cout << "Nhap lai mat khau: ";
+                    getline(cin, nhap_lai);
+                    if(nhap_lai != new_mk){
+                        cout << "Khong chinh xac, nhap lai...\n";
+                        return;
+                    }
+
+                    
+                    if(!check_pass(new_mk)){
+                        cout << "Mat khau khong du ki tu...\n";
+                        system("pause");
+                        return;
+                    }
+
+                    thongtin->set_password(new_mk);
+                     if(dinh_dang_id_admin(id_hien_tai)){
+                        save_tt_from_vector(tt_admin, "account_of_admin.txt");
+                    }else{
+                        save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
+                    }
+                    cout << "Doi mat khau thanh cong...\n";
+                    system("pause");
+                }                
+                break;
+            case 0:
+                break;
+            default:
+                break;
+            }
+        } while (choice != 0);
+        
     }
 
     
@@ -1045,6 +1272,7 @@ public:
             cout << "5. Thong tin ca nhan\n";
             cout << "6. Xoa thong tin ra khoi danh sach\n";
             cout << "7. Lich su lay xe\n";
+            cout << "8. Chinh sua thong tin\n";
             cout << "0. Dang xuat\n";
             cout << "-------> Nhap so de chon chuc nang: "; 
             cin >> choice;
@@ -1078,6 +1306,9 @@ public:
             case 7:
                 lich_su_lay_xe();
                 system("pause");
+                break;
+            case 8:
+                chinh_sua_thong_tin();
                 break;
             case 0:
                 break;
@@ -1130,10 +1361,10 @@ public:
             if(find){
                 if(loai_xe == "xe may"){
                     quan_li_bai_xe.lay_xe(id_hien_tai, loai_xe, bien_so, "xe_may_hien_tai.txt", tt_nhan_vien);
-                    save_tt_from_vector(tt_nhan_vien);
+                    save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
                 }else if(loai_xe == "xe oto"){
                     quan_li_bai_xe.lay_xe(id_hien_tai, loai_xe, bien_so, "xe_oto_hien_tai.txt", tt_nhan_vien);
-                    save_tt_from_vector(tt_nhan_vien);
+                    save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
                 }
             }else{
                 cout << "Bien so " << bien_so << " khong ton tai...\n";
@@ -1162,7 +1393,7 @@ public:
         if(thongtin){
             thongtin->set_tien(thongtin->get_tien() + money);
         }
-        save_tt_from_vector(tt_nhan_vien);
+        save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
     }
 
     // chuc nang 4: Danh sach pt dang gui
@@ -1279,11 +1510,11 @@ public:
             if (loai_xe == "xe may") {
                 ten_file = "dang_ki_xe_may_thang.txt";
                 quan_li_bai_xe.dang_ki_gui_xe_thang(id_hien_tai, loai_xe, bien_so, ten_file, tt_nhan_vien);
-                save_tt_from_vector(tt_nhan_vien);
+                save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
             } else if (loai_xe == "xe oto") {
                 ten_file = "dang_ki_xe_oto_thang.txt";
                 quan_li_bai_xe.dang_ki_gui_xe_thang(id_hien_tai, loai_xe, bien_so, ten_file, tt_nhan_vien);
-                save_tt_from_vector(tt_nhan_vien);
+                save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
             } else {
                 cout << "Loai xe khong hop le, vui long kiem tra lai...\n";
                 system("pause");
@@ -1386,6 +1617,10 @@ public:
             clean_display();
 
             cout << "====================== HE THONG DANG KI GIU XE THONG MINH ======================\n";
+
+            cout << setw(15) << " " << "SO LUONG PHUONG TIEN DANG GUI TRONG BAI XE: " << endl;
+            cout << setw(34) <<"XE MAY: " << so_luong_pt_dang_gui("xe may") << " | 100\n";
+            cout << setw(34) << "XE OTO: " << so_luong_pt_dang_gui("xe oto") << " | 100\n" << endl;
             cout << "1. Them phuong tien\n";
             cout << "2. Dang ki giu xe\n";
             cout << "3. Danh sach xe da dang ki\n";
@@ -1393,6 +1628,7 @@ public:
             cout << "5. Thong tin ca nhan\n";
             cout << "6. Nap tien\n";
             cout << "7. Lay xe\n";
+            cout << "8. Chinh sua thong tin\n";
             cout << "0. Dang xuat\n";
             cout << "-------> Nhap so de chon chuc nang: "; 
             cin >> choice;
@@ -1422,6 +1658,9 @@ public:
                     break;
                 case 7:
                     xu_li_lay_xe();
+                    break;
+                case 8:
+                    chinh_sua_thong_tin();
                     break;
                 case 0:
                     cout << "Dang xuat thanh cong...\n";

@@ -21,7 +21,7 @@ Hệ thống có phân quyền người dùng gồm: **Admin** và **User**, m�
 4. Thông tin cá nhân  
 5. Xoá thông tin khỏi danh sách  
 6. Lịch sử lấy xe  
-
+7. Chỉnh sửa thông tin
 ---
 
 ### ĐỐI VỚI USERS (NHÂN VIÊN / NGƯỜI DÙNG)
@@ -32,7 +32,8 @@ Hệ thống có phân quyền người dùng gồm: **Admin** và **User**, m�
 4. Danh sách xe đang được giữ  
 5. Thông tin cá nhân  
 6. Nạp tiền vào tài khoản  
-7. Lấy xe  
+7. Lấy xe
+8. Chỉnh sửa thông tin 
 
 ---
 

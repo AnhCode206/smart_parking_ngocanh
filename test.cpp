@@ -9,7 +9,8 @@
 #include <cmath>
 #include <vector>
 #include <filesystem>
-#include <set>
+#include <conio.h>
+#include <windows.h> 
 #include <map>
 using ll = long long;
 using namespace std;
@@ -1674,6 +1675,31 @@ public:
         }while (choice != 0); 
     }
 
+
+    // Dang Nhap 
+    string che_mk(){
+        string password;
+        char ch;
+
+        while(true){
+            ch = _getch();
+
+            if(ch == 13){
+                cout << endl;
+                break;
+            }else if(ch == 8){
+                if(!password.empty()){
+                    password.pop_back();
+                    cout << "\b \b";
+                }
+            }else if((ch >= 32 && ch <= 126)){
+                password += ch;
+                cout << "*";
+            }
+        }
+        return password;
+    }
+
     bool check_tt_dangki(const string &id, const string &password, vector<thong_tin_nguoi> &tt_people){
         for(auto &people : tt_people){
             if(people.get_ID() == id && people.get_password() == password){
@@ -1691,7 +1717,7 @@ public:
         cin.ignore();
         getline(cin, id);
         cout << "Nhap mat khau: ";
-        getline(cin, password);
+        password = che_mk();
 
         if(check_tt_dangki(id, password, tt_nhan_vien)){
             cout << "Dang nhap thanh cong...\n";
@@ -1711,7 +1737,7 @@ public:
         cin.ignore();
         getline(cin, id);
         cout << "Nhap mat khau: ";
-        getline(cin, password);
+        password = che_mk();
 
         if(check_tt_dangki(id, password, tt_admin)){
             cout << "Dang nhap thanh cong...\n";

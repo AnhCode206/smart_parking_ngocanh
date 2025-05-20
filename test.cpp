@@ -169,7 +169,6 @@ class thong_tin_nguoi{
         
             outFile << ID << "|" << password << "|" << hoten << "|" << gioi_tinh << "|" << ngaysinh << "|"
                     << sdt << "|" << gmail << "|" << balance << endl;
-            cout << "Dang ki thanh cong...\n";
             outFile.close();
             return true;
         }
@@ -869,7 +868,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
                                     it = xe_oto_hien_tai.erase(it);
                                     find = true;
                                     system("pause");
-                                    break;
+                                    break;             
                                 } else {
                                     cout << "So du hien tai khong du de thanh toan (" << dinh_dang_tien(phi) << " VND), vui long nap them tien...\n";
                                     system("pause");
@@ -1264,8 +1263,11 @@ public:
         int choice;
         do
         {
+            thong_tin_nguoi* thong_tin = tim_tt_id(tt_admin, id_hien_tai);
+
             clean_display();
             cout << "====================== He THONG ADMIN ======================\n";
+            cout << "Xin chao [ " << thong_tin->get_hoten() << "]. Moi thu deu on, chuc ban ngay moi tot lanh!!!!\n";
             cout << "1. Danh sach phuong tien dang ki\n";
             cout << "2. Danh sach phuong tien dang trong nha xe\n";
             cout << "3. Thong tin nhan vien dang ki\n";
@@ -1312,6 +1314,8 @@ public:
                 chinh_sua_thong_tin();
                 break;
             case 0:
+                cout << "Cam on ban, chuc ban mot ngay tot lanh....\n";
+                system("pause");
                 break;
             default:
                 cout << "Nhap lai...\n";
@@ -1356,7 +1360,7 @@ public:
                     if(tt_xe.first.get_bien_so() == bien_so){
                         find = true;
                         break;
-                    }
+                    }                                                                   
                 }
             }
             if(find){
@@ -1395,6 +1399,8 @@ public:
             thongtin->set_tien(thongtin->get_tien() + money);
         }
         save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
+        cout << "Nap tien thanh cong...\n";
+        system("pause");
     }
 
     // chuc nang 4: Danh sach pt dang gui
@@ -1429,9 +1435,9 @@ public:
             // so pt dang trong nha xe;
    int so_luong_pt_dang_gui(const string &loaixe) {
         if (loaixe == "xe may") {
-            return quan_li_bai_xe.xe_may_hien_tai.size();
+            return quan_li_bai_xe.xe_may_hien_tai.size() + quan_li_bai_xe.xe_may_theo_thang.size();
         } else if (loaixe == "xe oto") {
-            return quan_li_bai_xe.xe_oto_hien_tai.size();
+            return quan_li_bai_xe.xe_oto_hien_tai.size() + quan_li_bai_xe.xe_oto_theo_thang.size();
         } else {
             return 0;
         }
@@ -1527,8 +1533,6 @@ public:
         }
     }
 
-
-
     void phan_loai_dk_xe(){
         int choice;
         do
@@ -1613,12 +1617,14 @@ public:
 
     void control_users(){
         int choice;
+
+        thong_tin_nguoi* thong_tin = tim_tt_id(tt_nhan_vien, id_hien_tai);
         do
         {
             clean_display();
 
             cout << "====================== HE THONG DANG KI GIU XE THONG MINH ======================\n";
-
+            cout << "Xin chao [ " << thong_tin->get_hoten() << " ] he thong da san sang, chuc ban ngay moi tot lanh!!!\n";
             cout << setw(15) << " " << "SO LUONG PHUONG TIEN DANG GUI TRONG BAI XE: " << endl;
             cout << setw(34) <<"XE MAY: " << so_luong_pt_dang_gui("xe may") << " | 100\n";
             cout << setw(34) << "XE OTO: " << so_luong_pt_dang_gui("xe oto") << " | 100\n" << endl;
@@ -1710,125 +1716,59 @@ public:
         return false;
     }
     
-    void dangnhap_nhanvien(){
-        cout << "=================== DANG NHAP NHAN VIEN ===================\n";
+   
+
+    void dang_nhap(){
+        cout << "============= DANG NHAP =============\n";
         string id, password;
         cout << "Nhap ID: ";
         cin.ignore();
         getline(cin, id);
         cout << "Nhap mat khau: ";
         password = che_mk();
-
-        if(check_tt_dangki(id, password, tt_nhan_vien)){
-            cout << "Dang nhap thanh cong...\n";
-            system("pause");
-            control_users();
-
-        }else{
-            cout << "Sai thong tin dang nhap, vui long nhap lai...\n";
-            system("pause");
-        }
-    }
-
-    void  dangnhap_admin(){
-        cout << "=================== DANG NHAP ADMIN ===================\n";
-        string id, password;
-        cout << "Nhap ID: ";
-        cin.ignore();
-        getline(cin, id);
-        cout << "Nhap mat khau: ";
-        password = che_mk();
-
-        if(check_tt_dangki(id, password, tt_admin)){
-            cout << "Dang nhap thanh cong...\n";
-            system("pause");
-            control_admin();
-        }else{
-            cout << "Sai thong tin dang nhap, vui long nhap lai...\n";
-            system("pause");
-        }
-    }
-
-    void phanloai_dn(){
-        int choice;
-        do
-        {   
-            clean_display();
-            cout << "=================== DANG NHAP ===================\n";
-            cout << "1. Dang nhap cho nhan vien\n";
-            cout << "2. Dang nhap cho admin\n";
-            cout << "0. Thoat\n";
-            cout << "-------> Nhap so de chon chuc nang: "; 
-            cin >> choice;
-
-            clean_display();
-            switch (choice)
-            {
-            case 1:
-                dangnhap_nhanvien();
-                break;
-            case 2:
-                dangnhap_admin();
-                break;
-            default:
-                break;
+        
+        if(dinh_dang_id_admin(id)){ // amdin
+            if(check_tt_dangki(id, password, tt_admin)){
+                cout << "Dang nhap thanh cong...\n";
+                system("pause");
+                control_admin();
+            }else{
+                cout << "Sai thong tin dang nhap, vui long nhap lai...\n";
+                system("pause");
             }
-        } while (choice != 0);
+        }else{
+            if(check_tt_dangki(id, password, tt_nhan_vien)){
+                cout << "Dang nhap thanh cong...\n";
+                system("pause");
+                control_users();
+            }else{
+                cout << "Sai thong tin dang nhap, vui long nhap lai...\n";
+                system("pause");
+            }
+        }
     }
+
 
 
     /*====================================================== DANG KI ======================================================*/
 
                                    // truyền 2 file vào để kiểm tra        file này là để ghi đối tượng tương ứng
-    void dangki_nhanvien(){
-        thong_tin_nguoi nhan_vien;
-        nhan_vien.information();
-        if(nhan_vien.save_info("account_of_users.txt", "account_of_admin.txt", "account_of_users.txt")) {
-            tt_nhan_vien.push_back(nhan_vien);
-        }
-    }
 
-    void dangki_admin(){
-        thong_tin_nguoi admin;
-        admin.information();
-        if(!dinh_dang_id_admin(admin.get_ID())){
-            cout << "Sai phuong thuc nhap...\n";
-            return;
-        }
-        if(admin.save_info("account_of_admin.txt", "account_of_admin.txt", "account_of_users.txt")) {
-            tt_admin.push_back(admin);
-        }
-    }
+    void dang_ki(){
+        thong_tin_nguoi people;
+        people.information();
 
-    void  phanloai_dk(){
-        int choice;
-        do
-        {
-            clean_display();
-            cout << "=================== DANG KI ===================\n";
-            cout << "1. Dang ki cho nhan vien\n";
-            cout << "2. Dang ki cho admin\n";
-            cout << "-------> Nhap so de chon chuc nang: "; 
-            cin >> choice;
-
-            if(choice)
-
-            clean_display();
-            switch (choice)
-            {
-            case 1:
-                dangki_nhanvien();
-                system("pause");
-                break;
-            case 2: 
-                dangki_admin();
-                system("pause");
-                break;
-            default:
-                break;
+        if(dinh_dang_id_admin(people.get_ID())){    // admin
+            if(people.save_info("account_of_admin.txt", "account_of_admin.txt", "account_of_users.txt")){
+                tt_admin.push_back(people);
             }
-        } while (choice != 0);
-        
+        }else{       // nhan vien
+            if(people.save_info("account_of_users.txt", "account_of_admin.txt", "account_of_users.txt")){
+                tt_nhan_vien.push_back(people);
+            }
+        }
+        cout << "Dang ki thanh cong...\n";
+        system("pause");  
     }
 
     void menu_register(){
@@ -1847,10 +1787,10 @@ public:
             switch (choice)
             {
             case 1:
-                phanloai_dk();    
+                dang_ki();    
                 break;
             case 2:
-                phanloai_dn();
+                dang_nhap();
                 break;
             default:
                 break;

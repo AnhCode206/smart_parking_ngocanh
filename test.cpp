@@ -695,6 +695,34 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
             return false;
         }
 
+        bool check_pt_danggui(const string &bienso, string loai_xe){
+            if(loai_xe == "xe may"){
+                for(const auto &tt : xe_may_hien_tai){
+                    if(tt.first.get_bien_so() == bienso){
+                        return true;
+                    }
+                }   
+                for(const auto &tt : xe_may_theo_thang){
+                    if(tt.first.get_bien_so() == bienso){
+                        return true;
+                    }
+                }   
+            }
+            if(loai_xe == " xe oto"){
+                for(const auto &tt : xe_oto_theo_thang){
+                    if(tt.first.get_bien_so() == bienso){
+                        return true;
+                    }
+                }
+                for(const auto &tt : xe_oto_hien_tai){
+                    if(tt.first.get_bien_so() == bienso){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         void ghi_de_vaoFile_guithang(const string &loai_xe, const string &ten_file) {
             if(loai_xe == "xe may"){
                 ofstream outFlie("dang_ki_xe_may_theo_thang.txt", ios::trunc);
@@ -1220,7 +1248,13 @@ public:
             cout << "Bien so: " << xe.get_bien_so() << " | " << "loai_xe: " << xe.get_loai_xe() << 
                     " | " << " Thoi gian them xe: " << xe.get_thoi_gian_vao() <<
                     " | " << "ID: " << nhan_vien.get_ID() << " | " <<
-                    "chu so huu: " << nhan_vien.get_hoten() << endl;  
+                    "chu so huu: " << nhan_vien.get_hoten() << endl;
+            if(quan_li_bai_xe.check_pt_danggui(xe.get_bien_so(), xe.get_loai_xe())){
+                cout << "Xe hien dang trong bai xe!!!\n";
+                system("pause");
+            }else{
+                cout << "xe hien khong co trong bai xe !!!\n";
+            }
         }else cout << "Khong tim thay thong tin voi bien so: " << bienso << endl;
     }
 

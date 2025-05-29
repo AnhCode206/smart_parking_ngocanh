@@ -4,16 +4,84 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
-#include <cstdlib>
 #include <ctime>
 #include <cmath>
 #include <vector>
-#include <filesystem>
 #include <conio.h>
 #include <windows.h> 
 #include <map>
 using ll = long long;
 using namespace std;
+
+
+class kebang{
+    private: 
+        char vuong_trai_tren = char(218), vuong_giua_tren = char(194), vuong_phai_tren = char(191);
+        char vuong_trai_giua = char(195), vuong_giua_giua = char(197), vuong_phai_giua = char(180);
+        char vuong_trai_duoi = char(192), vuong_giua_duoi = char(193), vuong_phai_duoi = char(217);
+        char thang = char(179), ngang = char(196);
+    public:
+        //   10           10                    20                        7              10
+        // 67UV-WX  |   xe may     |    Mon May 12 06:55:27 2025    |   2345    |   hong nhung
+        //   0             1                     2                        3               4
+        void them_hang(vector<vector<string>> &bang, vector<string> &dulieu_moi){
+            bang.push_back(dulieu_moi);
+        }
+
+        void ke_bang(const vector<string> &tieu_de, const vector<int> &do_rong, const vector<vector<string>> &dulieu){
+            int so_cot = tieu_de.size();
+            int so_hang = dulieu.size();
+
+            cout << vuong_trai_tren;
+            for(int i = 0; i < so_cot; i++){
+                cout << string(do_rong[i], ngang);
+                if(i == so_cot - 1) cout << vuong_phai_tren;
+                else cout << vuong_giua_tren;
+            }
+            cout << "\n";
+
+            cout << thang; 
+            for(int i = 0; i < so_cot; i++){
+                cout << setw(do_rong[i]) << left << tieu_de[i] << thang;
+            }
+            cout << "\n";
+
+            
+            cout << vuong_trai_giua;
+            for(int i = 0; i < so_cot; i++){
+                cout << string(do_rong[i], ngang);
+                if(i == so_cot - 1) cout << vuong_phai_giua;
+                else cout << vuong_giua_giua;
+            }
+            cout << "\n";   
+
+
+            for(int i = 0; i < so_hang; i++){
+                cout << thang;
+                for(int j = 0; j < so_cot; j++){
+                    cout << setw(do_rong[j]) << dulieu[i][j] << thang;
+                }
+                cout << "\n";
+                if(i != so_hang - 1){   // dong cuoi ko in cai nay
+                    cout << vuong_trai_giua;
+                    for(int k = 0; k < so_cot; k++){
+                        cout << string(do_rong[k], ngang);
+                        if(k == so_cot - 1) cout << vuong_phai_giua;
+                        else cout << vuong_giua_giua;
+                    }
+                    cout << "\n";   
+                }   
+            }
+
+            cout << vuong_trai_duoi;
+            for(int i = 0; i < so_cot; i++){
+                cout << string(do_rong[i], ngang);
+                if(i == so_cot - 1) cout << vuong_phai_duoi;
+                else cout << vuong_giua_duoi;
+            }
+            cout << "\n";
+        }
+};
 
 
 class thong_tin_nguoi{
@@ -323,8 +391,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
                 string bienso, loaixe, thoigianvao, thoigianra, ID, ten, tien;
                 if (ten_file == "dang_ki_xe_may_theo_thang.txt" || ten_file == "dang_ki_xe_oto_theo_thang.txt"){
                     if (getline(ss, bienso, '|') && getline(ss, loaixe, '|') && getline(ss, thoigianvao, '|') 
-                        && getline(ss, thoigianra, '|') && getline(ss, ID, '|') && getline(ss, ten, '|')){
-                        getline(ss, tien, '|');
+                        && getline(ss, thoigianra, '|') && getline(ss, ID, '|') && getline(ss, ten)){
                         thong_tin_xe xe;
                         thong_tin_nguoi nhan_vien;
                         xe.set_bien_so(bienso);
@@ -1197,16 +1264,20 @@ public:
 
     // hien thi all thong tin cua nhan vien
     void all_thong_tin_nhan_vien(){
+
+        kebang ke;
+        vector<string> tieu_de = {"ID", "Ten", "Gioi tinh", "Ngay sinh", "So dien thoai", "So du", "Gmail"};
+        vector<int> do_rong = {15, 20, 20, 20, 25, 20, 35};
+        vector<vector<string>> dulieu;
         for(const auto &thongtin : tt_nhan_vien){
-            cout << "ID: " << thongtin.get_ID() << endl;
-            cout << "Ten: " << thongtin.get_hoten() << endl;
-            cout << "Gioi tinh: " << thongtin.get_gioi_tinh() << endl;
-            cout << "Ngay sinh: " << thongtin.get_ngaysinh() << endl;
-            cout << "So dien thoai: " << thongtin.get_sdt() << endl;
-            cout << "So du hien tai: " << dinh_dang_tien(thongtin.get_tien()) << " VND" << endl;
-            cout << "Gmail: " << thongtin.get_gmail() << endl << endl;
-            cout << "==================================================\n";
+
+             vector<string> hang = {thongtin.get_ID(), thongtin.get_hoten(), thongtin.get_gioi_tinh(), 
+                       thongtin.get_ngaysinh(), thongtin.get_sdt(), 
+                       dinh_dang_tien(thongtin.get_tien()) + "VND", 
+                       thongtin.get_gmail()};
+            ke.them_hang(dulieu, hang);
         }
+        ke.ke_bang(tieu_de, do_rong, dulieu);
     }
 
      // ======================================== ADMIN ======================================== 

@@ -84,7 +84,6 @@ class kebang{
         }
 };
 
-
 class thong_tin_nguoi{
     private:
         string ID;      // lay ID lam ten dang nhap
@@ -710,6 +709,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
                 }
             }
             ke.ke_bang(tieu_de, do_rong, dulieu);
+            dulieu.clear();
 
             cout << "Danh sach xe oto: \n";
             for(const auto &xe : xe_oto){
@@ -1005,7 +1005,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
                                     cout << "------------------------------\n";
                                     cout << "Da lay xe voi bien so " << bien_so << endl;
                                     cout << "Thoi gian ra: " << xe_may_hien_tai[i].first.get_tg_ra() << endl;
-                                    cout << "Tong so gio gui: " << so_gio << endl;
+                                    cout << "Tong so gio gui: " << so_gio << " gio" << endl;
                                     cout << "Phi gui xe: " << dinh_dang_tien(phi) << endl;
                                     cout << "So du hien tai: " << dinh_dang_tien(thongtin.get_tien()) << " VND\n";
 
@@ -1043,7 +1043,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
                                     cout << "------------------------------\n";
                                     cout << "Da lay xe voi bien so " << bien_so << endl;
                                     cout << "Thoi gian ra: " << xe_oto_hien_tai[i].first.get_tg_ra() << endl;
-                                    cout << "Tong so gio gui: " << so_gio << endl;
+                                    cout << "Tong so gio gui: " << so_gio << " gio" << endl;
                                     cout << "Phi gui xe: " << dinh_dang_tien(phi) << " VND" << endl;
                                     cout << "So du hien tai: " << dinh_dang_tien(thongtin.get_tien()) << " VND\n";
 
@@ -1460,7 +1460,7 @@ public:
     // chuc nang 6: 
     void lich_su_lay_xe() {
         kebang ke;
-        vector<string> tieu_de = {"Bien so", "Loai xe", "Thoi gian vao", "thoi gian ra", "ID", "Chu so huu", "Phi"};
+        vector<string> tieu_de = {"Bien so", "Loai xe", "Thoi gian vao", "thoi gian ra", "ID", "Chu so huu", "Phi (VND)"};
         vector<int> do_rong = {18, 10, 28, 28, 20, 20, 15};
         vector<vector<string>> dulieu;
 
@@ -1474,7 +1474,7 @@ public:
     
             if (getline(ss, bienso, '|') && getline(ss, loaixe, '|') && getline(ss, thoigianvao, '|') &&
                 getline(ss, thoigianra, '|') && getline(ss, id, '|') && getline(ss, ten, '|') && getline(ss, phi)) {
-                    vector<string> hang = {bienso, loaixe, thoigianvao, thoigianra, id, ten, phi};
+                    vector<string> hang = {bienso, loaixe, thoigianvao, thoigianra, id, ten, dinh_dang_tien(stoi(phi))};
                     ke.them_hang(dulieu, hang);
             }
         }
@@ -1990,13 +1990,14 @@ public:
         if(dinh_dang_id_admin(people.get_ID())){    // admin
             if(people.save_info("account_of_admin.txt", "account_of_admin.txt", "account_of_users.txt")){
                 tt_admin.push_back(people);
+                cout << "Dang ki thanh cong...\n";
             }
         }else{       // nhan vien
             if(people.save_info("account_of_users.txt", "account_of_admin.txt", "account_of_users.txt")){
                 tt_nhan_vien.push_back(people);
+                cout << "Dang ki thanh cong...\n";
             }
         }
-        cout << "Dang ki thanh cong...\n";
         system("pause");  
     }
 

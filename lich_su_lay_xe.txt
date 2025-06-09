@@ -48,3 +48,11 @@ ER-90|xe may|Fri May 30 23:14:24 2025|Fri May 30 23:36:48 2025|1234|ngoc anh|200
 132SCCDC|xe may|Sun Jun  1 03:01:10 2025|Sun Jun  1 03:01:22 2025|1234|naddsf|2000
 45DF-UI|xe oto|Sat May 31 16:04:05 2025|Sun Jun  1 03:03:48 2025|1234|ngocanh|55000
 45DF-UI|xe oto|Sun Jun  1 14:24:55 2025|Sun Jun  1 14:25:21 2025|1234|ngocanh|5000
+adscascd|xe may|Tue Jun  3 09:24:09 2025|Tue Jun  3 09:24:52 2025|1234|adad|2000
+45DF-UI|xe oto|Sun Jun  1 21:02:06 2025|Tue Jun  3 09:27:46 2025|1234|ngocanh|185000
+43-FG|xe may|Fri Jun  6 02:29:42 2025|Fri Jun  6 02:32:40 2025|NA_24DT4|Nguyen Ngoc Anh|2000
+43-FG|xe may|Fri Jun  6 02:33:04 2025|Fri Jun  6 03:13:24 2025|NA_24DT4|Nguyen Ngoc Anh|2000
+FG-56|xe may|Sat Jun  7 22:12:25 2025|Sat Jun  7 22:13:20 2025|1234|Nguyen Ngoc Anh|2000
+45DF-UI|xe oto|Sat Jun  7 22:13:59 2025|Sat Jun  7 22:14:20 2025|1234|ngocanh|5000
+GH78|xe may|Sun Jun  8 00:58:43 2025|Sun Jun  8 01:00:11 2025|KH001|ngo khai hoan|2000
+adscascd|xe may|Wed Jun  4 18:29:13 2025|Sun Jun  8 02:08:10 2025|KH001|adad|240000

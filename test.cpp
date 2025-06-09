@@ -755,7 +755,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
         void DS_pt_gui_theo_thang(const string &id_hien_tai){
             kebang ke;
             vector<string> tieu_de = {"Bien so", "Loai xe", "Thoi gian vao", "Thoi gian ra", "ID", "Chu so huu"};
-            vector<int> do_rong = {10, 10, 28, 28, 10, 20};
+            vector<int> do_rong = {10, 10, 28, 28, 15, 20};
             vector<vector<string>> dulieu;
 
             if(dinh_dang_id_admin(id_hien_tai)){ 
@@ -795,7 +795,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
         void all_phuong_tien(){
             kebang ke;
             vector<string> tieu_de = {"Bien so", "Loai xe", "Thoi gian vao", "ID", "Chu so huu"};
-            vector<int> do_rong = {10, 10, 28, 10, 20};
+            vector<int> do_rong = {10, 10, 28, 15, 20};
             vector<vector<string>> dulieu;
 
             cout << "Danh sach xe may:\n";
@@ -1428,7 +1428,7 @@ public:
     void xu_li_tim_pt(){
         kebang ke;
         vector<string> tieu_de = {"Bien so", "Loai xe", "Thoi gian them xe", "ID", "Chu so huu"};
-        vector<int> do_rong = {10, 10, 28, 10, 20};
+        vector<int> do_rong = {10, 10, 28, 15, 20};
         vector<vector<string>> dulieu;
  
 
@@ -2052,6 +2052,6 @@ public:
 
 int main() {
     system_function_control quan_li;
-    quan_li.menu_register();
+    quan_li.menu_register();   
     return 0;
 }

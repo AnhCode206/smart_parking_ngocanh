@@ -1,6 +1,3 @@
-1234|ngocanh|minh tuan|nam|09/03/2006|0982770167|anh066000@gmail.com|458000
-5678|password567|thanh huong|nu|15/05/1992|0912345678|thanhhuong@gmail.com|60000
-9012|password901|van nam|nam|20/10/1988|0923456789|vannam@gmail.com|45000
 3456|password345|thi mai|nu|12/03/1995|0934567890|thimai@gmail.com|70000
 7890|password789|duc long|nam|25/07/1991|0945678901|duclong@gmail.com|55000
 2345|password234|hong nhung|nu|30/11/1993|0956789012|hongnhung@gmail.com|65000
@@ -12,13 +9,11 @@
 9900|password990|mai linh|nu|30/08/1993|0912345679|mailinh@gmail.com|67000
 2233|password223|van hung|nam|05/01/1991|0923456790|vanhung@gmail.com|49000
 4455|password445|kim ngan|nu|10/07/1994|0934567901|kimngan@gmail.com|53000
-6677|password667|trong hieu|nam|15/03/1989|0945679012|tronghieu@gmail.com|59000
 8899|password889|phuong thao|nu|20/09/1992|0956789123|phuongthao@gmail.com|64000
 1010|password101|anh tuan|nam|25/05/1990|0967891234|anhtuan@gmail.com|47000
 3030|password303|ngoc mai|nu|30/11/1993|0978902345|ngocmai@gmail.com|68000
 5050|password505|duy khanh|nam|05/04/1988|0989013456|duykhanh@gmail.com|50000
 7070|password707|bao ngoc|nu|10/10/1991|0990124567|baongoc@gmail.com|56000
-9090|password909|huu thang|nam|15/06/1989|0901235678|huuthang@gmail.com|61000
 1212|password121|thuy linh|nu|20/02/1994|0912346789|thuylinh@gmail.com|52000
 3232|password323|quoc dat|nam|25/08/1990|0923457890|quocdat@gmail.com|57000
 5252|password525|minh thu|nu|30/04/1992|0934568901|minhthu@gmail.com|63000
@@ -43,7 +38,6 @@
 3939|password393|van hung|nam|05/02/1991|0923458901|vanhung2@gmail.com|54000
 5959|password595|kim ngan|nu|10/08/1993|0934569013|kimngan2@gmail.com|60000
 7979|password797|trong hieu|nam|15/04/1990|0945679124|tronghieu2@gmail.com|48000
-9999|password999|phuong thao|nu|20/10/1991|0956789235|phuongthao2@gmail.com|65000
 2020|password202|anh tuan|nam|25/06/1989|0967892346|anhtuan2@gmail.com|51000
 4040|password404|ngoc mai|nu|30/12/1992|0978903457|ngocmai2@gmail.com|57000
 6060|password606|duy khanh|nam|05/05/1990|0989014568|duykhanh2@gmail.com|62000
@@ -101,10 +95,9 @@ asdfdsf_admin|nadofgadsf|ngocanh|nam|03/03/2343|0443123114|asfas@gmail.com|0
 ngocasdc|ngocanh|mamfasdf|nam|09/rt/sdsq|0332174116|zfaer@gmail.com|0
 567345dfsv|ngocnah|farfasdrf|nam|93/ds/dddd|0332174116|adfgadgrf@gmail.com|0
 NA002|NgocAnh@#2006?|nguyen ngoc anh|nam|09/03/2006|0332174116|anh066000@gmail.com|0
-KH001|khaihoan|ngo khai khaon|nam|19/04/2006|0123456789|hoanbap@gmail.com|0
+KH001|khaihoan|ngo khai khaon|nam|09/03/2006|0123456789|hoanbap@gmail.com|408000
 NA003|ngocanh|Nguyen Ngoc Anh|nam|09/03/2006|0332174116|araref@gmail.com|6000
 anh34553|ngocanh|ngocanh|nam|09/03/2006|0332174116|asdfsd@gmail.com|0
 1234234|ngocanh|fafaf|nam|00/00/0000|0332174116|dafaf@gmail.com|0
 anh90|ngocanh|ngocanh|nam|09/03/2006|0332174116|adfds@gmail.com|0
 234anh|ngocanh|nguyen ngoc anh|nam|09/02/2006|0332174116|anh@gmail.com|0
-anh234567|ngocanh|ngoc anh|nam|09/03/2006|0332174116| dfasdf@gmail.com|0

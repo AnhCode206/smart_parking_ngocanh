@@ -716,7 +716,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
         void DS_pt_dang_gui_qua_ngay(const string &id_hien_tai){
             kebang ke;
             vector<string> tieu_de = {"Bien so", "Loai xe", "Thoi gian vao", "Thoi gian ra", "ID", "Chu so huu"};
-            vector<int> do_rong = {10, 10, 28, 28, 15, 20};
+            vector<int> do_rong = {10, 10, 28, 28, 20, 20};
             vector<vector<string>> dulieu;
 
              if(dinh_dang_id_admin(id_hien_tai)){
@@ -755,7 +755,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
         void DS_pt_gui_theo_thang(const string &id_hien_tai){
             kebang ke;
             vector<string> tieu_de = {"Bien so", "Loai xe", "Thoi gian vao", "Thoi gian ra", "ID", "Chu so huu"};
-            vector<int> do_rong = {10, 10, 28, 28, 10, 20};
+            vector<int> do_rong = {10, 10, 28, 28, 20, 20};
             vector<vector<string>> dulieu;
 
             if(dinh_dang_id_admin(id_hien_tai)){ 
@@ -795,7 +795,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
         void all_phuong_tien(){
             kebang ke;
             vector<string> tieu_de = {"Bien so", "Loai xe", "Thoi gian vao", "ID", "Chu so huu"};
-            vector<int> do_rong = {10, 10, 28, 10, 20};
+            vector<int> do_rong = {10, 10, 28, 15, 20};
             vector<vector<string>> dulieu;
 
             cout << "Danh sach xe may:\n";
@@ -1374,14 +1374,17 @@ public:
         do
         {
             clean_display();
-            cout << "CAP NHAP BAN GIA\n" << endl;
-            cout << setw(25) << "--Bang gia hien tai--\n"
-                 << setw(13) << "Xe may: " << quan_li_bai_xe.dinh_dang_tien(bang_gia["xe may"]) << " VND" << endl
-                 << setw(13) << "Xe oto: " <<quan_li_bai_xe.dinh_dang_tien(bang_gia["xe oto"]) << " VND" << endl;
-            cout << "-------------------------------------\n";
-            cout << setw(18) << "1. Xe may\n";
-            cout << setw(18) << "2. Xe oto\n";
-            cout << setw(17) << "0. thoat\n";
+            cout << "--------------------------------------\n";
+            cout << setw(30) << right << "-- Bang gia hien tai --" << endl;
+            cout << "--------------------------------------\n";
+            cout << left << setw(15) << "Xe may:"
+                 << right << setw(15) << quan_li_bai_xe.dinh_dang_tien(bang_gia["xe may"]) << " VND" << endl;
+            cout << left << setw(15) << "Xe oto:"
+                 << right << setw(15) << quan_li_bai_xe.dinh_dang_tien(bang_gia["xe oto"]) << " VND" << endl;
+            cout << "----------------------------------------\n";
+            cout << "1. Xe may\n";
+            cout << "2. Xe oto\n";
+            cout << "0. Thoat\n";
             cout << "-----> Nhap lua chon: "; cin >> choice;
 
             clean_display();
@@ -1407,7 +1410,6 @@ public:
         } while (choice != 0);
         
     }
-
 
     void tim_tt_nhanvien(){
         string id_nhanvien;
@@ -1556,23 +1558,20 @@ public:
             thong_tin_nguoi* thong_tin = tim_tt_id(tt_admin, id_hien_tai);
 
             clean_display();
-            cout << "============================ HE THONG ADMIN ============================\n";
-            cout << "Xin chao [ " << thong_tin->get_hoten() << " ]. Moi thu deu on, chuc ban ngay moi tot lanh!!!!\n";
-            cout << setw(16) << " " << "SO LUONG PHUONG TIEN DANG GUI TRONG BAI XE \n";
-            cout << setw(35) << "XE MAY: " << setw(3) << so_luong_pt_dang_gui("xe may") << " | " << so_xm_dang_gui << endl;
-            cout << setw(35) << "XE OTO: " << setw(3) << so_luong_pt_dang_gui("xe oto") << " | " << so_oto_dang_gui << endl << endl;
-            cout << "---------------------------------------------------------------------------\n";
+            cout << "===================================== HE THONG ADMIN =====================================\n";
+            cout << "Xin chao [ " << "\033[32m" << thong_tin->get_hoten() << "\033[0m" << " ] - He thong da san sang.\n" << endl;
+            cout << setw(24) << " " << "SO LUONG PHUONG TIEN DANG GUI TRONG BAI XE \n";
+            cout << setw(43) << "XE MAY: " << setw(3) << so_luong_pt_dang_gui("xe may") << " | " << so_xm_dang_gui << endl;
+            cout << setw(43) << "XE OTO: " << setw(3) << so_luong_pt_dang_gui("xe oto") << " | " << so_oto_dang_gui << endl << endl;
             cout << left;
             cout << setw(50) << "1. Danh sach phuong tien dang ki" << "7. Xoa thong tin xe ra khoi danh sach\n";
             cout << setw(50) << "2. Danh sach phuong tien trong nha xe" << "8. Lich su lay xe\n";
             cout << setw(50) << "3. Thong tin nhan vien dang ki" << "9. Chinh sua thong tin ca nhan\n";
             cout << setw(50) << "4. Tim kiem thong tin xe" << "10. Xoa tai khoan nhan vien\n";
             cout << setw(50) << "5. Tim kiem thong tin nhan vien" << "11. Thay doi bang gia\n";
-            cout << setw(50) << "6. Thong tin ca nhan" << "0. Dang xuat\n";
-
-            cout << "---------------------------------------------------------------------------\n";
-            cout << "-------> Nhap so de chon chuc nang: ";
-
+            cout << setw(50) << "6. Thong tin ca nhan" << "0. Dang xuat\n" << endl;
+            cout << string(92, char(196)) << endl;
+            cout << string(4, char(175)) << " Nhap so de chon chuc nang: ";
             cin >> choice;
 
             clean_display();
@@ -1920,21 +1919,18 @@ public:
             clean_display();
 
             cout << "====================== HE THONG DANG KI GIU XE THONG MINH ======================\n";
-            cout << "Xin chao [ " << thong_tin->get_hoten() << " ] - He thong da san sang.\n";
-            cout << "Chuc ban mot ngay moi tot lanh!!!\n\n";
-
-            cout << setw(16) << " " << "SO LUONG PHUONG TIEN DANG GUI TRONG BAI XE\n";
-            cout << setw(35) << "XE MAY: " << setw(3) << so_luong_pt_dang_gui("xe may") << " | " << so_xm_dang_gui << endl;
-            cout << setw(35) << "XE OTO: " << setw(3) << so_luong_pt_dang_gui("xe oto") << " | " << so_oto_dang_gui << endl << endl;
-            cout << "-------------------------------------------------------------------------------\n";
+            cout << "Xin chao [ " << "\033[32m" << thong_tin->get_hoten() << "\033[0m" << " ] - He thong da san sang.\n" << endl;
+            cout << setw(18) << " " << "SO LUONG PHUONG TIEN DANG GUI TRONG BAI XE\n";
+            cout << setw(38) << "XE MAY: " << setw(3) << so_luong_pt_dang_gui("xe may") << " | " << so_xm_dang_gui << endl;
+            cout << setw(38) << "XE OTO: " << setw(3) << so_luong_pt_dang_gui("xe oto") << " | " << so_oto_dang_gui << endl << endl;
             cout << left;
-            cout << setw(40) << "1. Them phuong tien" << "6. Nap tien\n";
-            cout << setw(40) << "2. Dang ki giu xe" << "7. Lay xe\n";
-            cout << setw(40) << "3. Danh sach xe da dang ki" << "8. Xoa phuong tien\n";
-            cout << setw(40) << "4. Danh sach xe dang giu" << "9. Chinh sua thong tin\n";
-            cout << setw(40) << "5. Thong tin ca nhan" << "0. Dang xuat\n";
-            cout << "-------------------------------------------------------------------------------\n";
-            cout << "-------> Nhap so de chon chuc nang: ";
+            cout << setw(55) << "1. Them phuong tien" << "6. Nap tien\n";
+            cout << setw(55) << "2. Dang ki giu xe" << "7. Lay xe\n";
+            cout << setw(55) << "3. Danh sach xe da dang ki" << "8. Xoa phuong tien\n";
+            cout << setw(55) << "4. Danh sach xe dang giu" << "9. Chinh sua thong tin\n";
+            cout << setw(55) << "5. Thong tin ca nhan" << "0. Dang xuat\n";
+            cout << string(82, char(196)) << endl;
+            cout << string(4, char(175)) << " Nhap so de chon chuc nang: ";
             cin >> choice;
 
             clean_display();

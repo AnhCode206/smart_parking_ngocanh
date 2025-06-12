@@ -95,3 +95,5 @@ aevvr|xe may|Wed May  7 10:34:11 2025|KH001| dcadc
 78TY|xe may|Mon Jun  2 01:26:40 2025|2006|ngoc anh
 FG-56|xe may|Sat Jun  7 18:39:07 2025|KH001|Nguyen Ngoc Anh
 GH78|xe may|Sun Jun  8 00:58:13 2025|KH001|ngo khai hoan
+|xe may|Tue Jun 10 00:30:11 2025|KH001|ngo khai khaon
+KH001|xe may|Tue Jun 10 00:30:58 2025|KH001|ngo khai khaon

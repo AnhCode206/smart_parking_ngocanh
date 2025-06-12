@@ -14,7 +14,6 @@
 using ll = long long;
 using namespace std;
 
-
 class kebang{
     private: 
         char vuong_trai_tren = char(218), vuong_giua_tren = char(194), vuong_phai_tren = char(191);
@@ -716,7 +715,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
         void DS_pt_dang_gui_qua_ngay(const string &id_hien_tai){
             kebang ke;
             vector<string> tieu_de = {"Bien so", "Loai xe", "Thoi gian vao", "Thoi gian ra", "ID", "Chu so huu"};
-            vector<int> do_rong = {10, 10, 28, 28, 15, 20};
+            vector<int> do_rong = {10, 10, 28, 28, 20, 20};
             vector<vector<string>> dulieu;
 
              if(dinh_dang_id_admin(id_hien_tai)){
@@ -755,7 +754,7 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
         void DS_pt_gui_theo_thang(const string &id_hien_tai){
             kebang ke;
             vector<string> tieu_de = {"Bien so", "Loai xe", "Thoi gian vao", "Thoi gian ra", "ID", "Chu so huu"};
-            vector<int> do_rong = {10, 10, 28, 28, 15, 20};
+            vector<int> do_rong = {10, 10, 28, 28, 20, 20};
             vector<vector<string>> dulieu;
 
             if(dinh_dang_id_admin(id_hien_tai)){ 
@@ -964,82 +963,41 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
 
         // xoa phuong tien ca nha can dung id cua nguoi dang dang nhap va bien so
         // xoa phuong admin thi xoa neu he thong tim thay bien so ko can id dang nhap
-        void lay_xe(string &id_hien_tai, const string &loai_xe, const string &bien_so, const string &ten_file, vector<thong_tin_nguoi> &nhanvien){
+        void lay_xe(string &id_hien_tai, const string &bien_so, const string &ten_file, vector<thong_tin_nguoi> &nhanvien, int &soluong, pair<thong_tin_xe, thong_tin_nguoi> ds_xe[], const int &phi_loai_xe){
             bool find = false;
-            const int phi_xe_may = 2000;
-            const int phi_oto = 5000;
 
-            if(loai_xe == "xe may"){
-                for(int i = 0; i < so_luong_xe_may_hien_tai; i++){
-                    if(xe_may_hien_tai[i].first.get_bien_so() == bien_so && xe_may_hien_tai[i].second.get_ID() == id_hien_tai){
-                        xe_may_hien_tai[i].first.set_tg_ra(thoigian_hientai());
-                        int so_gio = xe_may_hien_tai[i].first.tinh_khoang_tg(xe_may_hien_tai[i].first.get_thoi_gian_vao(), xe_may_hien_tai[i].first.get_tg_ra());
-                        int phi = so_gio*phi_xe_may;
+            for(int i = 0; i < soluong; i++){
+                if(ds_xe[i].first.get_bien_so() == bien_so && ds_xe[i].second.get_ID() == id_hien_tai){
+                    ds_xe[i].first.set_tg_ra(thoigian_hientai());
+                    int so_gio = ds_xe[i].first.tinh_khoang_tg(ds_xe[i].first.get_thoi_gian_vao(), ds_xe[i].first.get_tg_ra());
+                    int phi = so_gio * phi_loai_xe;
 
-                        for(auto &thongtin : nhanvien){
-                            if(thongtin.get_ID() == id_hien_tai){
-                                if(thongtin.get_tien() >= phi){
-                                    thongtin.set_tien(thongtin.get_tien() - phi);
-                                    cout << "------------------------------\n";
-                                    cout << "Da lay xe voi bien so " << bien_so << endl;
-                                    cout << "Thoi gian ra: " << xe_may_hien_tai[i].first.get_tg_ra() << endl;
-                                    cout << "Tong so gio gui: " << so_gio << " gio" << endl;
-                                    cout << "Phi gui xe: " << dinh_dang_tien(phi) << endl;
-                                    cout << "So du hien tai: " << dinh_dang_tien(thongtin.get_tien()) << " VND\n";
+                    for(auto &thongtin : nhanvien){
+                        if(thongtin.get_ID() == id_hien_tai){
+                            if(thongtin.get_tien() >= phi){
+                                thongtin.set_tien(thongtin.get_tien() - phi);
+                                cout << "------------------------------\n";
+                                cout << "Da lay xe voi bien so " << bien_so << endl;
+                                cout << "Thoi gian ra: " << ds_xe[i].first.get_tg_ra() << endl;
+                                cout << "Tong so gio gui: " << so_gio << " gio" << endl;
+                                cout << "Phi gui xe: " << dinh_dang_tien(phi) << endl;
+                                cout << "So du hien tai: " << dinh_dang_tien(thongtin.get_tien()) << " VND\n";
 
-                                    // ghi all thong tin cua xe, thong tin nguoi, + phi
-                                    ghi_lich_su(xe_may_hien_tai[i].first, xe_may_hien_tai[i].second, phi, "lich_su_lay_xe.txt");
-                                    
-                                    for(int j = i; j < so_luong_xe_may_hien_tai - 1; j++){
-                                        xe_may_hien_tai[j] = xe_may_hien_tai[j + 1];
-                                    }
-                                    so_luong_xe_may_hien_tai--;
-                                    ghi_de_vao_file_xe("xe_may_hien_tai.txt", xe_may_hien_tai, so_luong_xe_may_hien_tai);
-                                    find = true;
-                                    system("pause");
-                                    break;
-                                }else{
-                                    cout << "So du hien tai khong du de thanh toan (" << dinh_dang_tien(phi) << " VND), vui long nap them tien...\n";
-                                    system("pause");
-                                    return;
+                                ghi_lich_su(ds_xe[i].first, ds_xe[i].second, phi, "lich_su_lay_xe.txt");
+
+                                for(int j = i; j < soluong - 1; j++){
+                                    xe_may_hien_tai[j] = xe_may_hien_tai[j + 1];
                                 }
-                            }
-                        }
-                    }
-                }
-            }else if(loai_xe == "xe oto"){
-                for(int i = 0; i < so_luong_xe_oto_hien_tai; i++){
-                    if(xe_oto_hien_tai[i].first.get_bien_so() == bien_so && xe_oto_hien_tai[i].second.get_ID() == id_hien_tai){
-                        xe_oto_hien_tai[i].first.set_tg_ra(thoigian_hientai());
-                        int so_gio = xe_oto_hien_tai[i].first.tinh_khoang_tg(xe_oto_hien_tai[i].first.get_thoi_gian_vao(), xe_oto_hien_tai[i].first.get_tg_ra());
-                        int phi = so_gio*phi_oto;
+                                soluong--;
 
-                        for(auto &thongtin : nhanvien){
-                            if(thongtin.get_ID() == id_hien_tai){
-                                if(thongtin.get_tien() >= phi){
-                                    thongtin.set_tien(thongtin.get_tien() - phi);
-                                    cout << "------------------------------\n";
-                                    cout << "Da lay xe voi bien so " << bien_so << endl;
-                                    cout << "Thoi gian ra: " << xe_oto_hien_tai[i].first.get_tg_ra() << endl;
-                                    cout << "Tong so gio gui: " << so_gio << " gio" << endl;
-                                    cout << "Phi gui xe: " << dinh_dang_tien(phi) << " VND" << endl;
-                                    cout << "So du hien tai: " << dinh_dang_tien(thongtin.get_tien()) << " VND\n";
-
-                                    ghi_lich_su(xe_oto_hien_tai[i].first, xe_oto_hien_tai[i].second, phi, "lich_su_lay_xe.txt");
-                                    
-                                    for(int j = i; j < so_luong_xe_oto_hien_tai - 1; j++){
-                                        xe_oto_hien_tai[j] = xe_oto_hien_tai[j + 1];
-                                    }
-                                    so_luong_xe_oto_hien_tai--;
-                                    ghi_de_vao_file_xe("xe_oto_hien_tai.txt", xe_oto_hien_tai, so_luong_xe_oto_hien_tai);
-                                    find = true;
-                                    system("pause");
-                                    break;
-                                }else{
-                                    cout << "So du hien tai khong du de thanh toan (" << dinh_dang_tien(phi) << " VND), vui long nap them tien...\n";
-                                    system("pause");
-                                    return;
-                                }
+                                ghi_de_vao_file_xe(ten_file, ds_xe, soluong);
+                                find = true;
+                                system("pause");
+                                break;
+                            }else{
+                                cout << "So du hien tai khong du de thanh toan (" << dinh_dang_tien(phi) << " VND), vui long nap them tien...\n";
+                                system("pause");
+                                return;
                             }
                         }
                     }
@@ -1048,14 +1006,16 @@ class bai_xe : public thong_tin_nguoi, public thong_tin_xe{
             if(!find){
                 cout << "Khong tim thay xe voi bien so " << bien_so << endl;
                 system("pause");
-            }
+            }            
         }
+
 };  
 
-class system_function_control : public bai_xe{
+class system_function_control{
 private:
     bai_xe quan_li_bai_xe;
-    string id_hien_tai;     // 
+    string id_hien_tai;      
+    map<string, int> bang_gia = {{"xe may", 2000}, {"xe oto", 5000}};
     const int so_xm_dang_gui = 100;
     const int so_oto_dang_gui = 100;
     vector<thong_tin_nguoi> tt_nhan_vien;
@@ -1077,6 +1037,7 @@ public:
         quan_li_bai_xe.constructor_car();
         quan_li_bai_xe.auto_layxe("xe may", "dang_ki_xe_may_theo_thang.txt", quan_li_bai_xe.get_xe_may_thang(), quan_li_bai_xe.get_so_luong_xe_may_theo_thang());
         quan_li_bai_xe.auto_layxe("xe oto", "dang_ki_xe_oto_theo_thang.txt", quan_li_bai_xe.get_xe_oto_thang(), quan_li_bai_xe.get_so_luong_xe_oto_theo_thang());
+        doc_gia("bang_gia.txt");
     }
 
     // tai du lieu cau nhan vien | admin len vector
@@ -1130,6 +1091,50 @@ public:
         }
     }
 
+        void doc_thong_bao(){
+            cout << "========= THONG BAO =========\n" << endl;
+            ifstream inflie("thong_bao.txt");
+            string dong;
+            string line;
+            int dem = 1;
+
+            while(getline(inflie, dong)){
+                if(dong.find("Mon") == 0 || dong.find("Tue") == 0 || dong.find("Wed") == 0 ||
+                dong.find("Thu") == 0 || dong.find("Fri") == 0 ||dong.find("Sat") == 0 ||dong.find("Sun") == 0){
+                        cout << dem << ". THOI GIAN: " << "\e[33m" << dong << "\e[0m" << endl; 
+                        dong.clear();
+                        dem++;
+                    }
+                cout << string(5, ' ') << dong << endl;
+            }
+            inflie.close();
+        }
+
+        void thong_bao(){
+            string line ,thong_bao, thoi_gian;
+            cout << "========== THONG BAO ==========\n";
+            cout << "Nhap thong bao (nhap 'YES' de hoan thanh)\n";
+            cin.ignore();
+
+            while(true){
+                getline(cin, line);
+                if(line == "YES"){
+                    thoi_gian = quan_li_bai_xe.thoigian_hientai();
+                    cout << "Thong bao thanh cong...\n";
+                    break;
+                }
+                thong_bao += line + "\n";
+            }
+            ofstream outfile("thong_bao.txt", ios::app);
+            if(!outfile.is_open()){
+                cout << "Loi he thong...\n";
+            }
+            outfile << thoi_gian << endl;
+            outfile << thong_bao << endl;
+            outfile.close();
+        }
+      
+
     // chuc nang chinh sua thong tin
         /* chỉnh sửa id sẽ liên quan tới các file lưu trữ xe, xe_may.txt, xe_oto.txt,.... các file gửi xe khác
             nên cần phải cập lại id cho từng vector lưu trữ xe, sau đó ghi lại vào file, các thông tin như ngày sinh... 
@@ -1161,15 +1166,15 @@ public:
                         string new_id;
                         cout << "Nhap ID: ";
                         cin.ignore(); getline(cin, new_id);
-                        if(kt_trungTaiKhoan(new_id, "account_of_users.txt", "account_of_admin.txt")){
+                        if(quan_li_bai_xe.kt_trungTaiKhoan(new_id, "account_of_users.txt", "account_of_admin.txt")){
                             cout << "ID ton tai, vui long nhap ID khac...\n";
                             system("pause");
                             return; 
                         }
 
                         if(thongtin){               // id hien tại
-                            if(dinh_dang_id_admin(thongtin->get_ID())){     // id admin
-                                if(dinh_dang_id_admin(new_id)){
+                            if(quan_li_bai_xe.dinh_dang_id_admin(thongtin->get_ID())){     // id admin
+                                if(quan_li_bai_xe.dinh_dang_id_admin(new_id)){
                                     thongtin->set_ID(new_id);
                                     id_hien_tai = new_id; // cap nhat lai id hien tai cho he thong
                                     save_tt_from_vector(tt_admin, "account_of_admin.txt");
@@ -1181,7 +1186,7 @@ public:
                                     system("pause");
                                 }
                             }else{      //id nhan vien
-                                if(dinh_dang_id_admin(new_id)) {
+                                if(quan_li_bai_xe.dinh_dang_id_admin(new_id)) {
                                     cout << "ID sai dinh dang, vui long nhap lai...\n";
                                     system("pause");
                                     break;
@@ -1210,14 +1215,14 @@ public:
                     cin.ignore();
                     getline(cin, new_ngaysinh);
     
-                    if(!dinh_dang_ngay_sinh(new_ngaysinh)){
+                    if(!quan_li_bai_xe.dinh_dang_ngay_sinh(new_ngaysinh)){
                         cout << "Sai dinh dang, vui long nhap lai...\n";
                         system("pause");
                         return;
                     }
     
                     thongtin->set_ngaysinh(new_ngaysinh);
-                    if(dinh_dang_id_admin(id_hien_tai)){
+                    if(quan_li_bai_xe.dinh_dang_id_admin(id_hien_tai)){
                         save_tt_from_vector(tt_admin, "account_of_admin.txt");
                     }else{
                         save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
@@ -1233,14 +1238,14 @@ public:
                     cin.ignore();
                     getline(cin, new_sdt);
 
-                    if(!check_sdt(new_sdt)){
+                    if(!quan_li_bai_xe.check_sdt(new_sdt)){
                         cout << "So dien thoai khong dung dinh dang...\n";
                         system("pause");
                         return;
                     }
 
                     thongtin->set_sdt(new_sdt);
-                     if(dinh_dang_id_admin(id_hien_tai)){
+                     if(quan_li_bai_xe.dinh_dang_id_admin(id_hien_tai)){
                         save_tt_from_vector(tt_admin, "account_of_admin.txt");
                     }else{
                         save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
@@ -1256,14 +1261,14 @@ public:
                     cin.ignore();
                     getline(cin, new_gmail);
 
-                    if(!check_gmail(new_gmail)){
+                    if(!quan_li_bai_xe.check_gmail(new_gmail)){
                         cout << "Gmail khong dung dinh dang...\n";
                         system("pause");
                         return;
                     }
 
                     thongtin->set_gmail(new_gmail);
-                     if(dinh_dang_id_admin(id_hien_tai)){
+                     if(quan_li_bai_xe.dinh_dang_id_admin(id_hien_tai)){
                         save_tt_from_vector(tt_admin, "account_of_admin.txt");
                     }else{
                         save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
@@ -1294,14 +1299,14 @@ public:
                         return;
                     }
 
-                    if(!check_pass(new_mk)){
+                    if(!quan_li_bai_xe.check_pass(new_mk)){
                         cout << "Mat khau khong du ki tu...\n";
                         system("pause");
                         return;
                     }
 
                     thongtin->set_password(new_mk);
-                     if(dinh_dang_id_admin(id_hien_tai)){
+                     if(quan_li_bai_xe.dinh_dang_id_admin(id_hien_tai)){
                         save_tt_from_vector(tt_admin, "account_of_admin.txt");
                     }else{
                         save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
@@ -1339,7 +1344,7 @@ public:
 
         if(thongtin){
             cout << "=================== THONG TIN CA NHAN ===================\n";
-            vector<string> hang = {thongtin->get_ID(), thongtin->get_hoten(),  thongtin->get_gioi_tinh(), thongtin->get_ngaysinh(), thongtin->get_sdt(), dinh_dang_tien(thongtin->get_tien()), thongtin->get_gmail()};
+            vector<string> hang = {thongtin->get_ID(), thongtin->get_hoten(),  thongtin->get_gioi_tinh(), thongtin->get_ngaysinh(), thongtin->get_sdt(), quan_li_bai_xe.dinh_dang_tien(thongtin->get_tien()), thongtin->get_gmail()};
             ke.them_hang(dulieu, hang);
             ke.ke_bang(tieu_de, do_rong, dulieu);
         }else{
@@ -1358,7 +1363,7 @@ public:
 
              vector<string> hang = {thongtin.get_ID(), thongtin.get_hoten(), thongtin.get_gioi_tinh(), 
                        thongtin.get_ngaysinh(), thongtin.get_sdt(), 
-                       dinh_dang_tien(thongtin.get_tien()) + "VND", 
+                       quan_li_bai_xe.dinh_dang_tien(thongtin.get_tien()) + "VND", 
                        thongtin.get_gmail()};
             ke.them_hang(dulieu, hang);
         }
@@ -1366,6 +1371,88 @@ public:
     }
 
      // ======================================== ADMIN ======================================== 
+
+    void ghi_ban_gia(const string &tenfile){
+        ofstream outfile(tenfile);
+        if(outfile.fail()){
+            cout << "Khong mo file duoc..\n";
+            system("pause");
+            return;
+        }
+        for(auto [loaixe, gia] : bang_gia){
+            outfile << loaixe << "|" << gia << endl; 
+        }
+        outfile.close();
+    }
+
+    void doc_gia(const string &tenfile){
+        ifstream infile(tenfile);
+        if(infile.fail()){
+            cout << "Khong mo file duoc..\n";
+            system("pause");
+            return;
+        }
+
+        string dong;
+        while(getline(infile, dong)){
+            stringstream ss(dong);
+            string gia, loaixe;
+            if(getline(ss, loaixe, '|') && getline(ss, gia)){
+                bang_gia[loaixe] = stoi(gia);
+            }
+        }
+        infile.close();
+    }
+    
+    void xuli_cap_nhat_gia(string loaiXe, int giaMoi){
+        if(bang_gia.find(loaiXe) != bang_gia.end()){
+            bang_gia[loaiXe] = giaMoi;
+            cout << "Cap nhat gia thanh cong cho " << loaiXe << ": " << quan_li_bai_xe.dinh_dang_tien(giaMoi) << endl;
+            system("pause");
+        }
+    }
+
+    void cap_nha_gia(){
+        int choice;
+        do
+        {
+            clean_display();
+            cout << "--------------------------------------\n";
+            cout << setw(30) << right << "-- Bang gia hien tai --" << endl;
+            cout << "--------------------------------------\n";
+            cout << left << setw(15) << "Xe may:"
+                 << right << setw(15) << quan_li_bai_xe.dinh_dang_tien(bang_gia["xe may"]) << " VND" << endl;
+            cout << left << setw(15) << "Xe oto:"
+                 << right << setw(15) << quan_li_bai_xe.dinh_dang_tien(bang_gia["xe oto"]) << " VND" << endl;
+            cout << "----------------------------------------\n";
+            cout << "1. Xe may\n";
+            cout << "2. Xe oto\n";
+            cout << "0. Thoat\n";
+            cout << "-----> Nhap lua chon: "; cin >> choice;
+
+            clean_display();
+            switch (choice)
+            {
+            case 1:
+              { cout << "Nhap gia moi cho xe may: ";
+                int gia_moi; cin >> gia_moi;
+                xuli_cap_nhat_gia("xe may", gia_moi);
+                ghi_ban_gia("bang_gia.txt");
+                break;}
+            case 2:
+              { cout << "Nhap gia moi cho xe oto: ";
+                int gia_moi; cin >> gia_moi;
+                xuli_cap_nhat_gia("xe oto", gia_moi);
+                ghi_ban_gia("bang_gia.txt");
+                break;}
+            case 0:
+                break;
+            default:
+                break;
+            }
+        } while (choice != 0);
+        
+    }
 
     void tim_tt_nhanvien(){
         string id_nhanvien;
@@ -1428,7 +1515,7 @@ public:
     void xu_li_tim_pt(){
         kebang ke;
         vector<string> tieu_de = {"Bien so", "Loai xe", "Thoi gian them xe", "ID", "Chu so huu"};
-        vector<int> do_rong = {10, 10, 28, 15, 20};
+        vector<int> do_rong = {10, 10, 28, 10, 20};
         vector<vector<string>> dulieu;
  
 
@@ -1456,7 +1543,7 @@ public:
 
     // chuc nang 5: xoa phuong tien ra khoi he thong  |   dung chung ca users va admin
     void xu_li_xoa_pt(){
-        if(dinh_dang_id_admin(id_hien_tai)){
+        if(quan_li_bai_xe.dinh_dang_id_admin(id_hien_tai)){
             quan_li_bai_xe.all_phuong_tien();
         }else{
             quan_li_bai_xe.DS_phuongtien_ca_nhan(id_hien_tai);
@@ -1499,7 +1586,7 @@ public:
     
             if (getline(ss, bienso, '|') && getline(ss, loaixe, '|') && getline(ss, thoigianvao, '|') &&
                 getline(ss, thoigianra, '|') && getline(ss, id, '|') && getline(ss, ten, '|') && getline(ss, phi)) {
-                    vector<string> hang = {bienso, loaixe, thoigianvao, thoigianra, id, ten, dinh_dang_tien(stoi(phi))};
+                    vector<string> hang = {bienso, loaixe, thoigianvao, thoigianra, id, ten, quan_li_bai_xe.dinh_dang_tien(stoi(phi))};
                     ke.them_hang(dulieu, hang);
             }
         }
@@ -1514,23 +1601,21 @@ public:
             thong_tin_nguoi* thong_tin = tim_tt_id(tt_admin, id_hien_tai);
 
             clean_display();
-            cout << "============================ He THONG ADMIN ============================\n";
-            cout << "Xin chao [ " << thong_tin->get_hoten() << " ]. Moi thu deu on, chuc ban ngay moi tot lanh!!!!\n";
-            cout << setw(15) << " " << "SO LUONG PHUONG TIEN DANG GUI TRONG BAI XE: " << endl;
-            cout << setw(34) <<"XE MAY: " << so_luong_pt_dang_gui("xe may") << " | 100\n";
-            cout << setw(34) << "XE OTO: " << so_luong_pt_dang_gui("xe oto") << " | 100\n" << endl;
-            cout << "1. Danh sach phuong tien dang ki\n";
-            cout << "2. Danh sach phuong tien dang trong nha xe\n";
-            cout << "3. Thong tin nhan vien dang ki\n";
-            cout << "4. Tim kiem thong tin xe\n";
-            cout << "5. Tim kiem thong tin nhan vien\n";
-            cout << "6. Thong tin ca nhan\n";
-            cout << "7. Xoa thong tin xe ra khoi danh sach\n";
-            cout << "8. Lich su lay xe\n";
-            cout << "9. Chinh sua thong tin ca nhan\n";
-            cout << "10. Xoa tai khoan nhan vien\n";
-            cout << "0. Dang xuat\n";
-            cout << "-------> Nhap so de chon chuc nang: "; 
+            cout << "===================================== HE THONG ADMIN =====================================\n";
+            cout << "Xin chao [ " << "\e[32m" << thong_tin->get_hoten() << "\e[0m" << " ] - He thong da san sang.\n" << endl;
+            cout << setw(24) << " " << "SO LUONG PHUONG TIEN DANG GUI TRONG BAI XE \n";
+            cout << setw(43) << "XE MAY: " << setw(3) << so_luong_pt_dang_gui("xe may") << " | " << so_xm_dang_gui << endl;
+            cout << setw(43) << "XE OTO: " << setw(3) << so_luong_pt_dang_gui("xe oto") << " | " << so_oto_dang_gui << endl << endl;
+            cout << left;
+            cout << setw(50) << "1. Danh sach phuong tien dang ki" << "7. Xoa thong tin xe ra khoi danh sach\n";
+            cout << setw(50) << "2. Danh sach phuong tien trong nha xe" << "8. Lich su lay xe\n";
+            cout << setw(50) << "3. Thong tin nhan vien dang ki" << "9. Chinh sua thong tin ca nhan\n";
+            cout << setw(50) << "4. Tim kiem thong tin xe" << "10. Xoa tai khoan nhan vien\n";
+            cout << setw(50) << "5. Tim kiem thong tin nhan vien" << "11. Thay doi bang gia\n";
+            cout << setw(50) << "6. Thong tin ca nhan" << "12. Thong bao\n" << endl;
+            cout << "\e[31m" << "0. Dang xuat\n" << "\e[0m";
+            cout << string(90, char(196)) << endl;
+            cout << string(4, char(175)) << " Nhap so de chon chuc nang: ";
             cin >> choice;
 
             clean_display();
@@ -1572,6 +1657,12 @@ public:
             case 10:
                 xoa_tai_khoan();
                 break;
+            case 11:
+                cap_nha_gia();
+                break;
+            case 12:
+                thong_bao();
+                break;
             case 0:
                 cout << "Cam on ban, chuc ban mot ngay tot lanh....\n";
                 system("pause");
@@ -1585,6 +1676,11 @@ public:
 
     // ======================================== USERS ======================================== 
 
+        void nhan_thong_bao(){
+        doc_thong_bao();
+        system("pause");
+    }
+
     // chuc nang 7: lấy xe 
     void xu_li_lay_xe(){
         cout << "================= DANH SACH XE DANG GIU =================\n";
@@ -1594,7 +1690,7 @@ public:
         cin.ignore();
         getline(cin, bien_so);
 
-        thong_tin_xe xe;
+        thong_tin_xe xe;  
         thong_tin_nguoi nhan_vien;
 
         if(quan_li_bai_xe.tim_phuong_tien(bien_so, xe, nhan_vien)){
@@ -1607,9 +1703,11 @@ public:
             string ten_file;
             if(loai_xe == "xe may"){
                 ten_file = "xe_may_hien_tai.txt";
-            }else ten_file = "xe_oto_hien_tai.txt";
-
-            quan_li_bai_xe.lay_xe(id_hien_tai, loai_xe, bien_so, ten_file, tt_nhan_vien);
+                quan_li_bai_xe.lay_xe(id_hien_tai, bien_so, ten_file, tt_nhan_vien, quan_li_bai_xe.get_so_luong_xe_may_hien_tai(), quan_li_bai_xe.get_xe_may_hien_tai(), bang_gia["xe may"]);
+            }else{
+                ten_file = "xe_oto_hien_tai.txt";
+                quan_li_bai_xe.lay_xe(id_hien_tai, bien_so, ten_file, tt_nhan_vien, quan_li_bai_xe.get_so_luong_xe_oto_hien_tai(), quan_li_bai_xe.get_xe_oto_hien_tai(), bang_gia["xe oto"]);
+            }
             save_tt_from_vector(tt_nhan_vien, "account_of_users.txt");
         }else{
             cout << "Bien so khong toi tai trong he thong...\n";
@@ -1669,7 +1767,6 @@ public:
                 break;
             }
         } while (choice != 0);
-        
     }
 
     // chuc nang 2: dang ki giu xe
@@ -1874,21 +1971,19 @@ public:
             clean_display();
 
             cout << "====================== HE THONG DANG KI GIU XE THONG MINH ======================\n";
-            cout << "Xin chao [ " << thong_tin->get_hoten() << " ] he thong da san sang, chuc ban ngay moi tot lanh!!!\n";
-            cout << setw(16) << " " << "SO LUONG PHUONG TIEN DANG GUI TRONG BAI XE: " << endl;
-            cout << setw(35) <<"XE MAY: " << so_luong_pt_dang_gui("xe may") << " | 100\n";
-            cout << setw(35) << "XE OTO: " << so_luong_pt_dang_gui("xe oto") << " | 100\n" << endl;
-            cout << "1. Them phuong tien\n";
-            cout << "2. Dang ki giu xe\n";
-            cout << "3. Danh sach xe da dang ki\n";
-            cout << "4. Danh sach xe hien dang duoc giu\n";
-            cout << "5. Thong tin ca nhan\n";
-            cout << "6. Nap tien\n";
-            cout << "7. Lay xe\n";
-            cout << "8. Xoa phuong tien\n";
-            cout << "9. Chinh sua thong tin\n";
-            cout << "0. Dang xuat\n";
-            cout << "-------> Nhap so de chon chuc nang: "; 
+            cout << "Xin chao [ " << "\e[32m" << thong_tin->get_hoten() << "\e[0m" << " ] - He thong da san sang.\n" << endl;
+            cout << setw(18) << " " << "SO LUONG PHUONG TIEN DANG GUI TRONG BAI XE\n";
+            cout << setw(38) << "XE MAY: " << setw(3) << so_luong_pt_dang_gui("xe may") << " | " << so_xm_dang_gui << endl;
+            cout << setw(38) << "XE OTO: " << setw(3) << so_luong_pt_dang_gui("xe oto") << " | " << so_oto_dang_gui << endl << endl;
+            cout << left;
+            cout << setw(55) << "1. Them phuong tien" << "6. Nap tien\n";
+            cout << setw(55) << "2. Dang ki giu xe" << "7. Lay xe\n";
+            cout << setw(55) << "3. Danh sach xe da dang ki" << "8. Xoa phuong tien\n";
+            cout << setw(55) << "4. Danh sach xe dang giu" << "9. Chinh sua thong tin\n";
+            cout << setw(55) << "5. Thong tin ca nhan" << "10. Thong bao\n" << endl;
+            cout << "\e[31m" << "0. Dang xuat\n" << "\e[0m";
+            cout << string(82, char(196)) << endl;
+            cout << string(4, char(175)) << " Nhap so de chon chuc nang: ";
             cin >> choice;
 
             clean_display();
@@ -1921,6 +2016,9 @@ public:
                     break;
                 case 9:
                     chinh_sua_thong_tin();
+                    break;
+                case 10:
+                    nhan_thong_bao();
                     break;
                 case 0:
                     cout << "Dang xuat thanh cong...\n";
@@ -1977,7 +2075,7 @@ public:
         cout << "Nhap mat khau: ";
         password = che_mk();
         
-        if(dinh_dang_id_admin(id)){ // amdin
+        if(quan_li_bai_xe.dinh_dang_id_admin(id)){ // amdin
             if(check_tt_dangki(id, password, tt_admin)){
                 cout << "Dang nhap thanh cong...\n";
                 system("pause");
@@ -2005,7 +2103,7 @@ public:
         thong_tin_nguoi people;
         people.information();
 
-        if(dinh_dang_id_admin(people.get_ID())){    // admin
+        if(quan_li_bai_xe.dinh_dang_id_admin(people.get_ID())){    // admin
             if(people.save_info("account_of_admin.txt", "account_of_admin.txt", "account_of_users.txt")){
                 tt_admin.push_back(people);
                 cout << "Dang ki thanh cong...\n";
@@ -2052,6 +2150,6 @@ public:
 
 int main() {
     system_function_control quan_li;
-    quan_li.menu_register();   
+    quan_li.menu_register();
     return 0;
 }
